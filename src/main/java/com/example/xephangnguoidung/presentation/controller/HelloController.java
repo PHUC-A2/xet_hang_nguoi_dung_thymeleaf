@@ -27,4 +27,11 @@ public class HelloController {
         model.addAttribute("danhSachNguoiDung", danhSachNguoiDung);
         return "admin/quanly_nguoidung"; // Tên của file HTML
     }
+
+
+    // xông kẹo
+    @GetMapping("/xinchao")
+    public String xinChao(){
+        return "Xin chào";
+    }
 }
