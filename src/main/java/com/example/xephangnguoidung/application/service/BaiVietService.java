@@ -43,7 +43,10 @@ public class BaiVietService {
     public BaiViet suaBaiVietById(BaiViet baiViet){
         if(baiViet.getId() == null){
             throw new IllegalArgumentException("ID không được để trống khi cập nhật!");
-        }if(!this.baiVietRepository.existsById(baiViet.getId())){
+        }
+        
+        // kiểm tra id bài viết có tồn tại không
+        if(!this.baiVietRepository.existsById(baiViet.getId())){
             throw new RuntimeException("Không tìm thấy bài viết có ID: "+baiViet.getId());
         }
         return this.baiVietRepository.save(baiViet);
@@ -52,6 +55,6 @@ public class BaiVietService {
     // xóa bài viết bằng id
     public void xoaBaiVietById(Long id){
         this.baiVietRepository.deleteById(id);
-    }
+    } 
     
 }
