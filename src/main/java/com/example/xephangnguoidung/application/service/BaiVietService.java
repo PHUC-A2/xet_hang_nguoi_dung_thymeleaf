@@ -40,16 +40,19 @@ public class BaiVietService {
     }
 
     // sửa bài viết bằng id
-    public BaiViet suaBaiVietById(BaiViet baiViet){
-        if(baiViet.getId() == null){
+    public BaiViet suaBaiVietById(BaiViet baiVietMoi) {
+        if (baiVietMoi.getId() == null) {
             throw new IllegalArgumentException("ID không được để trống khi cập nhật!");
         }
-        
-        // kiểm tra id bài viết có tồn tại không
-        if(!this.baiVietRepository.existsById(baiViet.getId())){
-            throw new RuntimeException("Không tìm thấy bài viết có ID: "+baiViet.getId());
-        }
-        return this.baiVietRepository.save(baiViet);
+
+        // lấy bài viết hiện tại từ database
+        BaiViet baiVietCu = this.baiVietRepository.findById(baiVietMoi.getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết có ID: " + baiVietMoi.getId()));
+
+        // giữ nguyên ngày đăng cũ
+        baiVietMoi.setNgayDang(baiVietCu.getNgayDang());
+
+        return this.baiVietRepository.save(baiVietMoi);
     }
 
     // xóa bài viết bằng id

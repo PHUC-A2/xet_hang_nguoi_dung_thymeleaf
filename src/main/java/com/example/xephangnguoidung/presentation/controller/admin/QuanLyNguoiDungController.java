@@ -3,15 +3,7 @@ package com.example.xephangnguoidung.presentation.controller.admin;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.xephangnguoidung.application.service.NguoiDungService;
 import com.example.xephangnguoidung.data.entity.NguoiDung;
@@ -25,54 +17,36 @@ public class QuanLyNguoiDungController {
         this.nguoiDungService = nguoiDungService;
     }
 
-    // tạo người dùng
+    // ✅ 1️⃣ Tạo người dùng
     @PostMapping("/tao")
-    public NguoiDung taoNguoiDung(@RequestBody NguoiDung nguoiDung) {
-        return this.nguoiDungService.luuNguoiDung(nguoiDung);
+    public ResponseEntity<NguoiDung> taoNguoiDung(@RequestBody NguoiDung nguoiDung) {
+        return ResponseEntity.ok(nguoiDungService.luuNguoiDung(nguoiDung));
     }
 
-    // lấy tất cả người dùng
+    // ✅ 2️⃣ Lấy tất cả người dùng
     @GetMapping("/laytatcanguoidung")
-    public List<NguoiDung> layTatCaNguoiDung() {
-        List<NguoiDung> danhSach = this.nguoiDungService.layTatCaNguoiDung();
-        return danhSach;
+    public ResponseEntity<List<NguoiDung>> layTatCaNguoiDung() {
+        return ResponseEntity.ok(nguoiDungService.layTatCaNguoiDung());
     }
 
-   
-
-    // lấy người dùng dựa vào ID
+    // ✅ 3️⃣ Lấy người dùng theo ID
     @GetMapping("/laynguoidung/id/{id}")
-    public NguoiDung layNguoiDungById(@PathVariable Long id) {
-        return this.nguoiDungService.layNguoiDungById(id);
+    public ResponseEntity<NguoiDung> layNguoiDungById(@PathVariable Long id) {
+        return ResponseEntity.ok(nguoiDungService.layNguoiDungById(id));
     }
 
-    // lấy người dùng dựa vào tên đăng nhập
+    // ✅ 4️⃣ Lấy người dùng theo tên đăng nhập
     @GetMapping("/laynguoidung/tendangnhap/{tendangnhap}")
-    public NguoiDung layNguoiDungByEmail(@PathVariable String tenDangNhap) {
-        return this.nguoiDungService.layNguoiDungBangTenDangNhap(tenDangNhap);
+    public ResponseEntity<NguoiDung> layNguoiDungByTenDangNhap(@PathVariable String tenDangNhap) {
+        return ResponseEntity.ok(nguoiDungService.layNguoiDungBangTenDangNhap(tenDangNhap));
     }
 
-    // Sửa người dùng dựa vào id
+    // ✅ 5️⃣ Sửa thông tin người dùng
     @PutMapping("/suanguoidung/id/{id}")
     public ResponseEntity<NguoiDung> suaNguoiDungById(@PathVariable Long id, @RequestBody NguoiDung request) {
+        NguoiDung nguoiDung = nguoiDungService.layNguoiDungById(id);
 
-        /*
-         * id
-         * ten_dang_nhap
-         * mat_khau
-         * email
-         * diem
-         * cap_bac
-         * vai_tro
-         * so_lan_dang_nhap
-         * ngay_tao
-         */
-        NguoiDung nguoiDung = this.nguoiDungService.layNguoiDungById(id);
-
-        if (nguoiDung == null) {
-            return ResponseEntity.notFound().build(); // trả về 404 nếu không tìm thấy người dùng
-        }
-        // giữ nguyên ID và Email và ngày tạo
+        // Giữ nguyên ID, Email và ngày tạo
         nguoiDung.setTenDangNhap(request.getTenDangNhap());
         nguoiDung.setMatKhau(request.getMatKhau());
         nguoiDung.setDiem(request.getDiem());
@@ -80,19 +54,19 @@ public class QuanLyNguoiDungController {
         nguoiDung.setVaiTro(request.getVaiTro());
         nguoiDung.setSoLanDangNhap(request.getSoLanDangNhap());
 
-        // Giữ nguyên Email nếu request không có email mới
-
+        // Cập nhật Email nếu có
         if (request.getEmail() != null) {
             nguoiDung.setEmail(request.getEmail());
         }
 
-        NguoiDung nguoiDungMoi = this.nguoiDungService.suaNguoiDung(nguoiDung);
+        NguoiDung nguoiDungMoi = nguoiDungService.suaNguoiDung(id, nguoiDung);
         return ResponseEntity.ok(nguoiDungMoi);
     }
 
-    // xóa người dùng theo ID
+    // ✅ 6️⃣ Xóa người dùng theo ID
     @DeleteMapping("/xoanguoidung/id/{id}")
-    public void xoaNguoiDungById(@PathVariable Long id){
-        this.nguoiDungService.xoaNguoiDungBangId(id);
+    public ResponseEntity<String> xoaNguoiDungById(@PathVariable Long id) {
+        nguoiDungService.xoaNguoiDungBangId(id);
+        return ResponseEntity.ok("Người dùng đã bị xóa.");
     }
 }

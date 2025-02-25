@@ -2,19 +2,12 @@ package com.example.xephangnguoidung.application.service;
 
 import java.util.List;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.example.xephangnguoidung.data.entity.NguoiDung;
 import com.example.xephangnguoidung.data.repository.NguoiDungRepository;
 
-
-/*
-1️⃣ NguoiDungService (Quản lý người dùng)
-List<NguoiDung> layDanhSachNguoiDung() → Lấy danh sách tất cả người dùng
-NguoiDung timNguoiDungTheoId(Long id) → Tìm người dùng theo ID
-void capNhatThongTinNguoiDung(Long id, NguoiDung nguoiDung) → Cập nhật thông tin người dùng
-void xoaNguoiDung(Long id) → Xóa người dùng
-List<NguoiDung> layBangXepHang() → Lấy danh sách xếp hạng người dùng*/
 @Service
 public class NguoiDungService {
     private final NguoiDungRepository nguoiDungRepository;
@@ -23,41 +16,66 @@ public class NguoiDungService {
         this.nguoiDungRepository = nguoiDungRepository;
     }
 
-    // tạo người dùng
+    // ✅ 1️⃣ Tạo người dùng
     public NguoiDung luuNguoiDung(NguoiDung nguoiDung) {
-        return this.nguoiDungRepository.save(nguoiDung);
+        if (nguoiDungRepository.findByTenDangNhap(nguoiDung.getTenDangNhap()).isPresent()) {
+            throw new RuntimeException("Tên đăng nhập đã tồn tại!");
+        }
+        if (nguoiDungRepository.findByEmail(nguoiDung.getEmail()).isPresent()) {
+            throw new RuntimeException("Email đã tồn tại!");
+        }
+        return nguoiDungRepository.save(nguoiDung);
     }
 
-    // lấy người dùng dựa vào ID
+    // ✅ 2️⃣ Lấy người dùng theo ID
     public NguoiDung layNguoiDungById(Long id) {
-        return this.nguoiDungRepository.findById(id)
+        return nguoiDungRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng với ID: " + id));
     }
 
-    // lấy người dùng bằng tên đăng nhập 
+    // ✅ 3️⃣ Lấy người dùng theo tên đăng nhập
     public NguoiDung layNguoiDungBangTenDangNhap(String tenDangNhap) {
-        return this.nguoiDungRepository.findByTenDangNhap(tenDangNhap).orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng có tên đăng nhập là: " + tenDangNhap));
+        return nguoiDungRepository.findByTenDangNhap(tenDangNhap)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng có tên đăng nhập: " + tenDangNhap));
     }
 
-    // lấy tất cả người dùng
+    // ✅ 4️⃣ Lấy tất cả người dùng
     public List<NguoiDung> layTatCaNguoiDung() {
-        return this.nguoiDungRepository.findAll();
+        return nguoiDungRepository.findAll();
     }
 
-    // sửa người dùng dựa vào ID
-    public NguoiDung suaNguoiDung(NguoiDung nguoiDung) {
-        if (nguoiDung.getId() == null) {
-            throw new IllegalArgumentException("ID không được để trống khi cập nhật!");
+    // ✅ 5️⃣ Sửa thông tin người dùng
+    @Transactional
+    public NguoiDung suaNguoiDung(Long id, NguoiDung nguoiDung) {
+        NguoiDung nguoiDungHienTai = layNguoiDungById(id);
+
+        if (!nguoiDung.getEmail().equals(nguoiDungHienTai.getEmail()) &&
+                nguoiDungRepository.findByEmail(nguoiDung.getEmail()).isPresent()) {
+            throw new RuntimeException("Email đã tồn tại!");
         }
-        if (!this.nguoiDungRepository.existsById(nguoiDung.getId())) {
-            throw new RuntimeException("Không tìm thấy người dùng với ID: " + nguoiDung.getId());
-        }
-        return this.nguoiDungRepository.save(nguoiDung);
+
+        nguoiDungHienTai.setTenDangNhap(nguoiDung.getTenDangNhap());
+        nguoiDungHienTai.setMatKhau(nguoiDung.getMatKhau());
+        nguoiDungHienTai.setEmail(nguoiDung.getEmail());
+        nguoiDungHienTai.setDiem(nguoiDung.getDiem());
+        nguoiDungHienTai.setCapBac(nguoiDung.getCapBac());
+        nguoiDungHienTai.setVaiTro(nguoiDung.getVaiTro());
+        nguoiDungHienTai.setSoLanDangNhap(nguoiDung.getSoLanDangNhap());
+
+        return nguoiDungRepository.save(nguoiDungHienTai);
     }
 
-    // xóa người dùng
+    // ✅ 6️⃣ Xóa người dùng
+    @Transactional
     public void xoaNguoiDungBangId(Long id) {
-        this.nguoiDungRepository.deleteById(id);
+        if (!nguoiDungRepository.existsById(id)) {
+            throw new RuntimeException("Không tìm thấy người dùng để xóa!");
+        }
+        nguoiDungRepository.deleteById(id);
     }
 
+    // ✅ 7️⃣ Lấy bảng xếp hạng theo điểm
+    public List<NguoiDung> layBangXepHang() {
+        return nguoiDungRepository.findAllByOrderByDiemDesc();
+    }
 }

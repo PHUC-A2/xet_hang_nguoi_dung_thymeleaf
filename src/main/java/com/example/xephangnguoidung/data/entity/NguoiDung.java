@@ -21,35 +21,40 @@ vai_tro	ENUM('USER', 'ADMIN')	String
 so_lan_dang_nhap	INT	int
 ngay_tao	TIMESTAMP	LocalDateTime
 */
-@AllArgsConstructor // constructor đủ
-@NoArgsConstructor // constructor không tham số
-@Data // get,set,toString tự động
 @Entity
 @Table(name = "nguoi_dung")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class NguoiDung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true) // không được null, không được trùng nhau
+    @Column(nullable = false, unique = true)
     private String tenDangNhap;
 
-    @Column(nullable = false) // không được null
+    @Column(nullable = false)
     private String matKhau;
 
-    @Column(nullable = false, unique = true) // không được null, không được trùng nhau
+    @Column(nullable = false, unique = true)
     private String email;
 
-    private int diem = 0; // mặc từ 0
+    private int diem = 0;
 
-    @Enumerated(EnumType.STRING) // Lưu enum dưới dạng String trong DB
-    private CapBac capBac = CapBac.DONG; // mặc định Đồng , vế sau sẽ là Vàng,Bạc,Kim Cương,Bạch Kim,Vip
+    @Enumerated(EnumType.STRING)
+    private CapBac capBac = CapBac.DONG;
 
-    @Enumerated(EnumType.STRING) // Lưu enum dưới dạng String trong DB
-    private VaiTro vaiTro = VaiTro.USER; // mặc định là user
+    @Enumerated(EnumType.STRING)
+    private VaiTro vaiTro = VaiTro.USER;
 
-    private int soLanDangNhap = 0; // mặc định là 0
+    private int soLanDangNhap = 0;
 
-    private LocalDateTime ngayTao = LocalDateTime.now(); //
+    @Column(updatable = false) // Ngăn không cho cập nhật lại ngày tạo
+    private LocalDateTime ngayTao;
 
+    @PrePersist
+    protected void onCreate() {
+        this.ngayTao = LocalDateTime.now();
+    }
 }

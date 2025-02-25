@@ -60,21 +60,22 @@ public class QuanLyBaiVietController {
      * so_luot_binh_luan INT int
      * 
      */
+    @PutMapping("/suabaiviet/id/{id}")
+    public ResponseEntity<BaiViet> suaBaiVietById(@PathVariable Long id, @RequestBody BaiViet request) {
+        BaiViet baiViet = this.baiVietService.layBaiVietById(id);
 
-     @PutMapping("/suabaiviet/id/{id}")
-     public ResponseEntity<BaiViet> suaBaiVietById(@PathVariable Long id ,@RequestBody BaiViet request){
-
-        BaiViet baiViet = this.layBaiVietById(id);
-
-        if(baiViet == null){
+        if (baiViet == null) {
             return ResponseEntity.notFound().build(); // trả về 404 nếu không tìm thấy bài viết
         }
+
+        // Chỉ cập nhật tiêu đề và nội dung, giữ nguyên ngày đăng
         baiViet.setTieuDe(request.getTieuDe());
         baiViet.setNoiDung(request.getNoiDung());
 
+        // Lưu lại bài viết đã chỉnh sửa
         BaiViet baiVietMoi = this.baiVietService.suaBaiVietById(baiViet);
         return ResponseEntity.ok(baiVietMoi);
-     }
+    }
 
     // xóa bài viết bằng id
     @DeleteMapping("/xoabaiviet/id/{id}")
