@@ -20,12 +20,13 @@ public class HelloController {
     public String helloPage() {
         return "admin/quanly_nguoidung";// file html
     }
-     // view
-    @GetMapping("/view/laytatcanguoidung")
+    
+    // Trả về trang HTML hiển thị danh sách người dùng
+    @GetMapping("/laytatcanguoidung")
     public String showAllUsers(Model model) {
         List<NguoiDung> danhSachNguoiDung = nguoiDungService.layTatCaNguoiDung();
         model.addAttribute("danhSachNguoiDung", danhSachNguoiDung);
-        return "admin/quanly_nguoidung"; // Tên của file HTML
+        return "admin/quanly_nguoidung"; // Tên file HTML hiển thị danh sách người dùng
     }
 
 
