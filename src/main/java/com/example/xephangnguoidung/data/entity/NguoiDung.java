@@ -10,17 +10,6 @@ import java.time.LocalDateTime;
 import com.example.xephangnguoidung.data.enums.CapBac;
 import com.example.xephangnguoidung.data.enums.VaiTro;
 
-/*
-id	BIGINT (PK)	Long
-ten_dang_nhap	VARCHAR(50)	String
-mat_khau	VARCHAR(255)	String
-email	VARCHAR(100)	String
-diem	INT	int
-cap_bac	ENUM
-vai_tro	ENUM('USER', 'ADMIN')	String
-so_lan_dang_nhap	INT	int
-ngay_tao	TIMESTAMP	LocalDateTime
-*/
 @Entity
 @Table(name = "nguoi_dung")
 @AllArgsConstructor

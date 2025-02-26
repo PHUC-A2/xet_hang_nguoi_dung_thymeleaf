@@ -1,24 +1,20 @@
 package com.example.xephangnguoidung.data.repository;
 
-import com.example.xephangnguoidung.data.entity.NguoiDung;
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface NguoiDungRepository extends JpaRepository<NguoiDung, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    // ✅ Tìm người dùng theo tên đăng nhập
+import com.example.xephangnguoidung.data.entity.NguoiDung;
+
+@Repository
+public interface NguoiDungRepository extends JpaRepository<NguoiDung, Long> {
     Optional<NguoiDung> findByTenDangNhap(String tenDangNhap);
 
-    // ✅ Tìm người dùng theo email
     Optional<NguoiDung> findByEmail(String email);
 
-    // ✅ Kiểm tra xem email đã tồn tại hay chưa
-    boolean existsByEmail(String email);
-
-    // ✅ Kiểm tra xem tên đăng nhập đã tồn tại hay chưa
-    boolean existsByTenDangNhap(String tenDangNhap);
-
-    // ✅ Lấy danh sách người dùng theo điểm (bảng xếp hạng)
     List<NguoiDung> findAllByOrderByDiemDesc();
+
+    List<NguoiDung> findByTenDangNhapContainingIgnoreCaseOrEmailContainingIgnoreCase(String tenDangNhap, String email);
 }

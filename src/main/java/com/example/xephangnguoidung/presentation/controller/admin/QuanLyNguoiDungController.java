@@ -3,12 +3,14 @@ package com.example.xephangnguoidung.presentation.controller.admin;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.xephangnguoidung.application.service.NguoiDungService;
 import com.example.xephangnguoidung.data.entity.NguoiDung;
 
-@RestController
+@Controller
 @RequestMapping("/admin/nguoidung")
 public class QuanLyNguoiDungController {
     private final NguoiDungService nguoiDungService;
@@ -17,33 +19,38 @@ public class QuanLyNguoiDungController {
         this.nguoiDungService = nguoiDungService;
     }
 
-    // ✅ 1️⃣ Tạo người dùng
-    @PostMapping("/tao")
-    public ResponseEntity<NguoiDung> taoNguoiDung(@RequestBody NguoiDung nguoiDung) {
-        return ResponseEntity.ok(nguoiDungService.luuNguoiDung(nguoiDung));
-    }
-
-    // ✅ 2️⃣ Lấy tất cả người dùng
+    // Trả về trang HTML hiển thị danh sách người dùng
     @GetMapping("/laytatcanguoidung")
-    public ResponseEntity<List<NguoiDung>> layTatCaNguoiDung() {
-        return ResponseEntity.ok(nguoiDungService.layTatCaNguoiDung());
+    public String showAllUsers(Model model) {
+        List<NguoiDung> danhSachNguoiDung = nguoiDungService.layTatCaNguoiDung();
+        model.addAttribute("danhSachNguoiDung", danhSachNguoiDung);
+        model.addAttribute("nguoiDung", new NguoiDung()); // Thêm dòng này để đảm bảo nguoiDung không null
+        return "admin/quanly_nguoidung"; // Tên file HTML hiển thị danh sách người dùng
     }
 
-    // ✅ 3️⃣ Lấy người dùng theo ID
+    // Thêm người dùng mới
+    @PostMapping("/tao")
+    public String addUser(@ModelAttribute NguoiDung nguoiDung) {
+        nguoiDungService.luuNguoiDung(nguoiDung);
+        return "redirect:/admin/nguoidung/laytatcanguoidung"; // Redirect to the list of users
+    }
+
+    // Xóa người dùng theo ID
+    @PostMapping("/xoanguoidung/id/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        nguoiDungService.xoaNguoiDungBangId(id);
+        return "redirect:/admin/nguoidung/laytatcanguoidung"; // Redirect to the list of users
+    }
+
+    // Lấy người dùng theo ID
     @GetMapping("/laynguoidung/id/{id}")
     public ResponseEntity<NguoiDung> layNguoiDungById(@PathVariable Long id) {
         return ResponseEntity.ok(nguoiDungService.layNguoiDungById(id));
     }
 
-    // ✅ 4️⃣ Lấy người dùng theo tên đăng nhập
-    @GetMapping("/laynguoidung/tendangnhap/{tendangnhap}")
-    public ResponseEntity<NguoiDung> layNguoiDungByTenDangNhap(@PathVariable String tenDangNhap) {
-        return ResponseEntity.ok(nguoiDungService.layNguoiDungBangTenDangNhap(tenDangNhap));
-    }
-
-    // ✅ 5️⃣ Sửa thông tin người dùng
-    @PutMapping("/suanguoidung/id/{id}")
-    public ResponseEntity<NguoiDung> suaNguoiDungById(@PathVariable Long id, @RequestBody NguoiDung request) {
+    // Sửa thông tin người dùng
+    @PostMapping("/sua/id/{id}")
+    public String suaNguoiDungById(@PathVariable Long id, @ModelAttribute NguoiDung request) {
         NguoiDung nguoiDung = nguoiDungService.layNguoiDungById(id);
 
         // Giữ nguyên ID, Email và ngày tạo
@@ -59,14 +66,16 @@ public class QuanLyNguoiDungController {
             nguoiDung.setEmail(request.getEmail());
         }
 
-        NguoiDung nguoiDungMoi = nguoiDungService.suaNguoiDung(id, nguoiDung);
-        return ResponseEntity.ok(nguoiDungMoi);
+        nguoiDungService.suaNguoiDung(id, nguoiDung);
+        return "redirect:/admin/nguoidung/laytatcanguoidung"; // Redirect to the list of users
     }
 
-    // ✅ 6️⃣ Xóa người dùng theo ID
-    @DeleteMapping("/xoanguoidung/id/{id}")
-    public ResponseEntity<String> xoaNguoiDungById(@PathVariable Long id) {
-        nguoiDungService.xoaNguoiDungBangId(id);
-        return ResponseEntity.ok("Người dùng đã bị xóa.");
+    // Tìm kiếm người dùng
+    @GetMapping("/timkiem")
+    public String timKiemNguoiDung(@RequestParam("keyword") String keyword, Model model) {
+        List<NguoiDung> danhSachNguoiDung = nguoiDungService.timKiemNguoiDung(keyword);
+        model.addAttribute("danhSachNguoiDung", danhSachNguoiDung);
+        model.addAttribute("keyword", keyword);
+        return "admin/quanly_nguoidung"; // Tên file HTML hiển thị danh sách người dùng
     }
 }

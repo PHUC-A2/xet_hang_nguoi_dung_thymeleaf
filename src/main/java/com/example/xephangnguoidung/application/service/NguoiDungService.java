@@ -78,4 +78,9 @@ public class NguoiDungService {
     public List<NguoiDung> layBangXepHang() {
         return nguoiDungRepository.findAllByOrderByDiemDesc();
     }
+
+    // ✅ 8️⃣ Tìm kiếm người dùng
+    public List<NguoiDung> timKiemNguoiDung(String keyword) {
+        return nguoiDungRepository.findByTenDangNhapContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
+    }
 }
