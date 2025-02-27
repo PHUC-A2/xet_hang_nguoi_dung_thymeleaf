@@ -35,12 +35,3 @@ public class BinhLuan {
         this.ngayDang = LocalDateTime.now();
     }
 }
-
-/*
- * id BIGINT (PK) Long
- * noi_dung NVARCHAR(MAX) String
- * nguoi_dung_id BIGINT (FK) Long
- * bai_viet_id BIGINT (FK) Long
- * ngay_dang TIMESTAMP LocalDateTime
- * 
- */

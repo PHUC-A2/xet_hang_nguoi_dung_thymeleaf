@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +32,12 @@ public class BaiViet {
 
     private int soLuotThich = 0;
     private int soLuotBinhLuan = 0;
+
+    @OneToMany(mappedBy = "baiViet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BinhLuan> binhLuans;
+
+    @OneToMany(mappedBy = "baiViet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LuotThich> luotThichs;
 
     @PrePersist
     protected void onCreate() {

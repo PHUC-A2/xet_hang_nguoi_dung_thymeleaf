@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.xephangnguoidung.application.service.NguoiDungService;
 import com.example.xephangnguoidung.data.entity.NguoiDung;
@@ -49,26 +50,29 @@ public class QuanLyNguoiDungController {
     }
 
     // Sửa thông tin người dùng
-    @PostMapping("/sua/id/{id}")
-    public String suaNguoiDungById(@PathVariable Long id, @ModelAttribute NguoiDung request) {
-        NguoiDung nguoiDung = nguoiDungService.layNguoiDungById(id);
+   @PostMapping("/sua/id/{id}")
+public String suaNguoiDungById(@PathVariable Long id, @ModelAttribute NguoiDung request,
+                               RedirectAttributes redirectAttributes) {
+    NguoiDung nguoiDung = nguoiDungService.layNguoiDungById(id);
+    nguoiDung.setTenDangNhap(request.getTenDangNhap());
+    nguoiDung.setMatKhau(request.getMatKhau());
+    nguoiDung.setDiem(request.getDiem());
+    nguoiDung.setVaiTro(request.getVaiTro());
+    nguoiDung.setSoLanDangNhap(request.getSoLanDangNhap());
 
-        // Giữ nguyên ID, Email và ngày tạo
-        nguoiDung.setTenDangNhap(request.getTenDangNhap());
-        nguoiDung.setMatKhau(request.getMatKhau());
-        nguoiDung.setDiem(request.getDiem());
-        nguoiDung.setCapBac(request.getCapBac());
-        nguoiDung.setVaiTro(request.getVaiTro());
-        nguoiDung.setSoLanDangNhap(request.getSoLanDangNhap());
-
-        // Cập nhật Email nếu có
-        if (request.getEmail() != null) {
-            nguoiDung.setEmail(request.getEmail());
-        }
-
-        nguoiDungService.suaNguoiDung(id, nguoiDung);
-        return "redirect:/admin/nguoidung/laytatcanguoidung"; // Redirect to the list of users
+    if (request.getEmail() != null) {
+        nguoiDung.setEmail(request.getEmail());
     }
+
+    nguoiDungService.capNhatCapBac(nguoiDung);
+    nguoiDungService.suaNguoiDung(id, nguoiDung);
+
+    // Thêm thông báo thành công
+    redirectAttributes.addFlashAttribute("successMessage", "Cập nhật người dùng thành công!");
+
+    return "redirect:/admin/nguoidung/laytatcanguoidung";
+}
+
 
     // Tìm kiếm người dùng
     @GetMapping("/timkiem")

@@ -17,47 +17,25 @@ public class BaiVietService {
     public BaiVietService(BaiVietRepository baiVietRepository) {
         this.baiVietRepository = baiVietRepository;
     }
-    
-    // tạo bài viết
-    public BaiViet luuBaiViet(BaiViet baiViet){
-        return this.baiVietRepository.save(baiViet);
+
+    public List<BaiViet> layTatCaBaiViet() {
+        return baiVietRepository.findAll();
     }
 
-    // lấy bài viết bằng ID
-    public BaiViet layBaiVietById(Long id){
-        return this.baiVietRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết có id: " + id));
+    public BaiViet layBaiVietById(Long id) {
+        return baiVietRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết với ID: " + id));
     }
 
-    // lấy bài viết bằng ID
-    public BaiViet layBaiVietByTieuDe(String tieuDe) {
-        return this.baiVietRepository.findByTieuDe(tieuDe)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết có tiêu đề là: " + tieuDe));
+    public BaiViet luuBaiViet(BaiViet baiViet) {
+        return baiVietRepository.save(baiViet);
     }
 
-    // lấy tất cả bài viết 
-    public List<BaiViet> layTatCaBaiViet(){
-        return this.baiVietRepository.findAll();
+    public void xoaBaiVietById(Long id) {
+        baiVietRepository.deleteById(id);
     }
 
-    // sửa bài viết bằng id
-    public BaiViet suaBaiVietById(BaiViet baiVietMoi) {
-        if (baiVietMoi.getId() == null) {
-            throw new IllegalArgumentException("ID không được để trống khi cập nhật!");
-        }
-
-        // lấy bài viết hiện tại từ database
-        BaiViet baiVietCu = this.baiVietRepository.findById(baiVietMoi.getId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết có ID: " + baiVietMoi.getId()));
-
-        // giữ nguyên ngày đăng cũ
-        baiVietMoi.setNgayDang(baiVietCu.getNgayDang());
-
-        return this.baiVietRepository.save(baiVietMoi);
+    public List<BaiViet> timKiemBaiViet(String keyword) {
+        return baiVietRepository.findByTieuDeContainingIgnoreCase(keyword);
     }
-
-    // xóa bài viết bằng id
-    public void xoaBaiVietById(Long id){
-        this.baiVietRepository.deleteById(id);
-    } 
-    
 }

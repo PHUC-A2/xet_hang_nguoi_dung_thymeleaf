@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bảng Điều Khiển Quản Trị</title>
+    <title>Sửa Bài Viết</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
@@ -14,6 +13,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
   </head>
   <body>
     <!-- Navbar -->
@@ -52,7 +52,9 @@
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/admin/diem/bangxephang}">QL BXH người dùng</a>
+              <a class="nav-link" th:href="@{/admin/diem/bangxephang}"
+                >QL BXH người dùng</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link" th:href="@{/admin/baiviet}">QL Bài viết</a>
@@ -71,50 +73,38 @@
       </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container mt-5">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="card text-white bg-primary mb-3">
-            <div class="card-body">
-              <h5 class="card-title">
-                <i class="fas fa-users"></i> Tổng Số Người Dùng
-              </h5>
-              <p class="card-text">100</p>
-            </div>
-          </div>
+      <h2>Sửa Bài Viết</h2>
+      <form
+        th:action="@{/admin/baiviet/sua/{id}(id=${baiViet.id})}"
+        th:object="${baiViet}"
+        method="post"
+      >
+        <div class="form-group">
+          <label for="tieuDe">Tiêu Đề</label>
+          <input
+            type="text"
+            class="form-control"
+            id="tieuDe"
+            th:field="*{tieuDe}"
+            required
+          />
         </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-success mb-3">
-            <div class="card-body">
-              <h5 class="card-title">
-                <i class="fas fa-user-check"></i> Người Dùng Hoạt Động
-              </h5>
-              <p class="card-text">80</p>
-            </div>
-          </div>
+        <div class="form-group">
+          <label for="noiDung">Nội Dung</label>
+          <textarea
+            class="form-control"
+            id="noiDung"
+            th:field="*{noiDung}"
+            required
+          ></textarea>
+          <script>
+            CKEDITOR.replace("noiDung");
+          </script>
         </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-warning mb-3">
-            <div class="card-body">
-              <h5 class="card-title">
-                <i class="fas fa-user-clock"></i> Người Dùng Chờ Duyệt
-              </h5>
-              <p class="card-text">15</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-danger mb-3">
-            <div class="card-body">
-              <h5 class="card-title">
-                <i class="fas fa-user-slash"></i> Người Dùng Bị Cấm
-              </h5>
-              <p class="card-text">5</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        <button type="submit" class="btn btn-primary mt-3">Lưu Thay Đổi</button>
+        <a th:href="@{/admin/baiviet}" class="btn btn-success mt-4 m-2">Quay lại</a>
+      </form>
     </div>
 
     <!-- Bootstrap JS and Popper.js -->
