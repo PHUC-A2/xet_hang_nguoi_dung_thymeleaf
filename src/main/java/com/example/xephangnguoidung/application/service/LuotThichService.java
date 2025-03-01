@@ -16,71 +16,83 @@ import java.util.stream.Collectors;
 @Transactional
 public class LuotThichService {
 
-    private final LuotThichRepository luotThichRepository;
-    private final BaiVietRepository baiVietRepository;
-    private final NguoiDungRepository nguoiDungRepository;
+        private final LuotThichRepository luotThichRepository;
+        private final BaiVietRepository baiVietRepository;
+        private final NguoiDungRepository nguoiDungRepository;
 
-    public LuotThichService(LuotThichRepository luotThichRepository, BaiVietRepository baiVietRepository,
-            NguoiDungRepository nguoiDungRepository) {
-        this.luotThichRepository = luotThichRepository;
-        this.baiVietRepository = baiVietRepository;
-        this.nguoiDungRepository = nguoiDungRepository;
-    }
-
-    // ✅ 1️⃣ Thêm lượt thích
-    public void themLuotThich(Long nguoiDungId, Long baiVietId) {
-        NguoiDung nguoiDung = nguoiDungRepository.findById(nguoiDungId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
-
-        BaiViet baiViet = baiVietRepository.findById(baiVietId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
-
-        // Kiểm tra nếu người dùng đã thích bài viết
-        if (luotThichRepository.existsByNguoiDungAndBaiViet(nguoiDung, baiViet)) {
-            throw new RuntimeException("Người dùng đã thích bài viết này");
+        public LuotThichService(LuotThichRepository luotThichRepository, BaiVietRepository baiVietRepository,
+                        NguoiDungRepository nguoiDungRepository) {
+                this.luotThichRepository = luotThichRepository;
+                this.baiVietRepository = baiVietRepository;
+                this.nguoiDungRepository = nguoiDungRepository;
         }
 
-        LuotThich luotThich = new LuotThich();
-        luotThich.setNguoiDung(nguoiDung);
-        luotThich.setBaiViet(baiViet);
-        luotThichRepository.save(luotThich);
+        // Thêm lượt thích
+        public void themLuotThich(Long nguoiDungId, Long baiVietId) {
+                NguoiDung nguoiDung = nguoiDungRepository.findById(nguoiDungId)
+                                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 
-        // Cập nhật số lượt thích trong bảng BaiViet
-        baiViet.setSoLuotThich(baiViet.getSoLuotThich() + 1);
-        baiVietRepository.save(baiViet);
-    }
+                BaiViet baiViet = baiVietRepository.findById(baiVietId)
+                                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
 
-    // ✅ 2️⃣ Xóa lượt thích
-    public void xoaLuotThich(Long nguoiDungId, Long baiVietId) {
-        NguoiDung nguoiDung = nguoiDungRepository.findById(nguoiDungId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+                // Kiểm tra nếu người dùng đã thích bài viết
+                if (luotThichRepository.existsByNguoiDungAndBaiViet(nguoiDung, baiViet)) {
+                        throw new RuntimeException("Người dùng đã thích bài viết này");
+                }
 
-        BaiViet baiViet = baiVietRepository.findById(baiVietId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
+                LuotThich luotThich = new LuotThich();
+                luotThich.setNguoiDung(nguoiDung);
+                luotThich.setBaiViet(baiViet);
+                luotThichRepository.save(luotThich);
 
-        LuotThich luotThich = luotThichRepository.findByNguoiDungAndBaiViet(nguoiDung, baiViet)
-                .orElseThrow(() -> new RuntimeException("Lượt thích không tồn tại"));
+                // Cập nhật số lượt thích trong bảng BaiViet
+                baiViet.setSoLuotThich(baiViet.getSoLuotThich() + 1);
+                baiVietRepository.save(baiViet);
+        }
 
-        luotThichRepository.delete(luotThich);
+        // Xóa lượt thích
+        public void xoaLuotThich(Long nguoiDungId, Long baiVietId) {
+                NguoiDung nguoiDung = nguoiDungRepository.findById(nguoiDungId)
+                                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 
-        // Cập nhật số lượt thích trong bảng BaiViet
-        baiViet.setSoLuotThich(Math.max(0, baiViet.getSoLuotThich() - 1));
-        baiVietRepository.save(baiViet);
-    }
+                BaiViet baiViet = baiVietRepository.findById(baiVietId)
+                                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
 
-    // ✅ 3️⃣ Lấy danh sách ID người dùng thích bài viết
-    public List<Long> layDanhSachNguoiThich(Long baiVietId) {
-        BaiViet baiViet = baiVietRepository.findById(baiVietId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
+                LuotThich luotThich = luotThichRepository.findByNguoiDungAndBaiViet(nguoiDung, baiViet)
+                                .orElseThrow(() -> new RuntimeException("Lượt thích không tồn tại"));
 
-        return luotThichRepository.findByBaiViet(baiViet)
-                .stream()
-                .map(luotThich -> luotThich.getNguoiDung().getId())
-                .collect(Collectors.toList());
-    }
+                luotThichRepository.delete(luotThich);
 
-    // ✅ 4️⃣ Đếm tổng số lượt thích trên hệ thống
-    public int demTongLuotThich() {
-        return luotThichRepository.countAllBy();
-    }
+                // Cập nhật số lượt thích trong bảng BaiViet
+                baiViet.setSoLuotThich(Math.max(0, baiViet.getSoLuotThich() - 1));
+                baiVietRepository.save(baiViet);
+        }
+
+        // Lấy danh sách ID người dùng thích bài viết
+        public List<Long> layDanhSachNguoiThich(Long baiVietId) {
+                BaiViet baiViet = baiVietRepository.findById(baiVietId)
+                                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
+
+                return luotThichRepository.findByBaiViet(baiViet)
+                                .stream()
+                                .map(luotThich -> luotThich.getNguoiDung().getId())
+                                .collect(Collectors.toList());
+        }
+
+        // Đếm tổng số lượt thích trên hệ thống
+        public int demTongLuotThich() {
+                return luotThichRepository.countAllBy();
+        }
+
+        // Lấy tất cả lượt thích
+        public List<LuotThich> layTatCaLuotThich() {
+                return luotThichRepository.findAll();
+        }
+
+        // Tìm kiếm lượt thích
+        public List<LuotThich> timKiemLuotThich(String keyword) {
+                return luotThichRepository
+                                .findByNguoiDung_TenDangNhapContainingIgnoreCaseOrBaiViet_TieuDeContainingIgnoreCase(
+                                                keyword, keyword);
+        }
 }

@@ -16,4 +16,7 @@ public interface LuotThichRepository extends JpaRepository<LuotThich, Long> {
     List<LuotThich> findByBaiViet(BaiViet baiViet);
 
     int countAllBy();
+
+    List<LuotThich> findByNguoiDung_TenDangNhapContainingIgnoreCaseOrBaiViet_TieuDeContainingIgnoreCase(
+            String tenDangNhap, String tieuDe);
 }

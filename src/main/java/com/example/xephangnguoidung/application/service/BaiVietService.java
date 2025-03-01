@@ -38,4 +38,9 @@ public class BaiVietService {
     public List<BaiViet> timKiemBaiViet(String keyword) {
         return baiVietRepository.findByTieuDeContainingIgnoreCase(keyword);
     }
+
+    // Thêm phương thức timBaiVietTheoId
+    public BaiViet timBaiVietTheoId(Long id) {
+        return layBaiVietById(id);
+    }
 }

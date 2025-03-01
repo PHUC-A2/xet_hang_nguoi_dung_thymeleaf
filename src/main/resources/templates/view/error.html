@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lỗi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Đã xảy ra lỗi</h1>
+        <p class="text-center">Trang bạn yêu cầu không tồn tại hoặc đã xảy ra lỗi.</p>
+        <div class="text-center">
+            <a th:href="@{/admin}" class="btn btn-primary">Quay lại trang chủ</a>
+        </div>
+    </div>
+</body>
+</html>

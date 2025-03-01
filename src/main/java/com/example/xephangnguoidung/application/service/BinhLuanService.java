@@ -26,7 +26,7 @@ public class BinhLuanService {
         this.nguoiDungRepository = nguoiDungRepository;
     }
 
-    // ✅ 1️⃣ Thêm bình luận
+    // Thêm bình luận
     public void themBinhLuan(BinhLuan binhLuan) {
         NguoiDung nguoiDung = nguoiDungRepository.findById(binhLuan.getNguoiDung().getId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
@@ -44,7 +44,7 @@ public class BinhLuanService {
         baiVietRepository.save(baiViet);
     }
 
-    // ✅ 2️⃣ Xóa bình luận
+    // Xóa bình luận
     public void xoaBinhLuan(Long binhLuanId) {
         BinhLuan binhLuan = binhLuanRepository.findById(binhLuanId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy bình luận"));
@@ -52,16 +52,37 @@ public class BinhLuanService {
         BaiViet baiViet = binhLuan.getBaiViet();
         binhLuanRepository.delete(binhLuan);
 
-        // ✅ Cập nhật số lượt bình luận trong bảng BaiViet
+        // Cập nhật số lượt bình luận trong bảng BaiViet
         baiViet.setSoLuotBinhLuan(Math.max(0, baiViet.getSoLuotBinhLuan() - 1));
         baiVietRepository.save(baiViet);
     }
 
-    // ✅ 3️⃣ Lấy danh sách bình luận của bài viết
+    // Lấy danh sách bình luận của bài viết
     public List<BinhLuan> layDanhSachBinhLuan(Long baiVietId) {
         BaiViet baiViet = baiVietRepository.findById(baiVietId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
 
         return binhLuanRepository.findByBaiViet(baiViet);
+    }
+
+    // Lấy tất cả bình luận
+    public List<BinhLuan> layTatCaBinhLuan() {
+        return binhLuanRepository.findAll();
+    }
+
+    // Tìm kiếm bình luận
+    public List<BinhLuan> timKiemBinhLuan(String keyword) {
+        return binhLuanRepository.findByNoiDungContainingIgnoreCase(keyword);
+    }
+
+    // Lấy bình luận theo ID
+    public BinhLuan layBinhLuanById(Long binhLuanId) {
+        return binhLuanRepository.findById(binhLuanId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy bình luận"));
+    }
+
+    // Cập nhật bình luận
+    public void capNhatBinhLuan(BinhLuan binhLuan) {
+        binhLuanRepository.save(binhLuan);
     }
 }
