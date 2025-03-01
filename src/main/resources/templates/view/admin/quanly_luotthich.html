@@ -3,22 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Quản Lý Lượt Thích</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+      }
+      .navbar-brand img {
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+      .sidebar {
+        position: fixed;
+        top: 56px;
+        left: 0;
+        width: 250px;
+        height: calc(100vh - 56px);
+        background-color: #343a40;
+        padding: 1rem;
+        overflow-y: auto;
+      }
+      .sidebar h5 {
+        color: #fff;
+        margin-bottom: 1.5rem;
+      }
+      .sidebar .nav-link {
+        color: #adb5bd;
+        font-size: 1.1em;
+        margin: 0.5rem 0;
+        transition: background 0.3s, color 0.3s;
+      }
+      .sidebar .nav-link:hover {
+        background-color: #495057;
+        color: #fff;
+        border-radius: 4px;
+      }
+      .content {
+        margin-left: 250px;
+        padding: 2rem;
+        padding-top: 80px;
+      }
+      @media (max-width: 768px) {
+        .content { margin-left: 0; }
+        .sidebar { display: none; }
+      }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <span><img src="/images/avatar/image.png" alt="admin" style="width: 30px; height: 30px; margin-right: 10px"/></span>
+            <a class="navbar-brand" th:href="@{/admin}">
+                <img src="/images/avatar/image.png" alt="admin" width="40" height="40"/>
                 Bảng Điều Khiển Quản Trị
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin}">Trang Chủ</a>
                     </li>
@@ -45,40 +89,71 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h2>Quản Lý Lượt Thích</h2>
-        <form th:action="@{/admin/luotthich/timkiem}" method="get" class="mb-3">
-            <div class="input-group">
-                <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm lượt thích...">
-                <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h5>Menu Quản Trị</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin}"><i class="fas fa-home me-2"></i>Trang Chủ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/nguoidung/laytatcanguoidung}"><i class="fas fa-users me-2"></i>QL người dùng</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/diem/bangxephang}"><i class="fas fa-chart-line me-2"></i>QL BXH người dùng</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/baiviet}"><i class="fas fa-file-alt me-2"></i>QL Bài viết</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/binhluan}"><i class="fas fa-comments me-2"></i>QL Bình luận</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/admin/luotthich}"><i class="fas fa-thumbs-up me-2"></i>QL Lượt thích</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-sign-out-alt me-2"></i>Đăng Xuất</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Nội dung chính -->
+    <div class="content">
+        <div class="container mt-5">
+            <h2>Quản Lý Lượt Thích</h2>
+            <form th:action="@{/admin/luotthich/timkiem}" method="get" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm lượt thích...">
+                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Người Dùng</th>
+                        <th>Bài Viết</th>
+                        <th>Thời Gian</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="luotThich : ${danhSachLuotThich}">
+                        <td th:text="${luotThich.id}">1</td>
+                        <td th:text="${luotThich.nguoiDung.tenDangNhap}">Tên người dùng</td>
+                        <td th:text="${luotThich.baiViet.tieuDe}">Tiêu đề bài viết</td>
+                        <td th:text="${#temporals.format(luotThich.thoiGian, 'dd/MM/yyyy HH:mm:ss')}">01/01/2025 12:00:00</td>
+                        <td>
+                            <form th:action="@{'/admin/luotthich/xoa/' + ${luotThich.nguoiDung.id} + '/' + ${luotThich.baiViet.id}}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mt-4">
+                <h4>Tổng số lượt thích: <span th:text="${tongSoLuotThich}">0</span></h4>
             </div>
-        </form>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Người Dùng</th>
-                    <th>Bài Viết</th>
-                    <th>Thời Gian</th>
-                    <th>Hành Động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="luotThich : ${danhSachLuotThich}">
-                    <td th:text="${luotThich.id}">1</td>
-                    <td th:text="${luotThich.nguoiDung.tenDangNhap}">Tên người dùng</td>
-                    <td th:text="${luotThich.baiViet.tieuDe}">Tiêu đề bài viết</td>
-                    <td th:text="${#temporals.format(luotThich.thoiGian, 'dd/MM/yyyy HH:mm:ss')}">01/01/2025 12:00:00</td>
-                    <td>
-                        <form th:action="@{'/admin/luotthich/xoa/' + ${luotThich.nguoiDung.id} + '/' + ${luotThich.baiViet.id}}" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="mt-4">
-            <h4>Tổng số lượt thích: <span th:text="${tongSoLuotThich}">0</span></h4>
         </div>
     </div>
 

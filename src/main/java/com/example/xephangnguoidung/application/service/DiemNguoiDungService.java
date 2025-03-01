@@ -49,4 +49,9 @@ public class DiemNguoiDungService {
         nguoiDungService.capNhatCapBac(nguoiDung);
     }
 
+    // tong so diem
+    public Long tongSoDiem() {
+        return diemNguoiDungRepository.count();
+    }
+
 }

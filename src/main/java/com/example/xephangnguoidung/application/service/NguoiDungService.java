@@ -123,4 +123,9 @@ public class NguoiDungService {
             System.out.println("⚠️ Cấp bậc không thay đổi, không cần cập nhật.");
         }
     }
+
+    // số lượng người dùng
+    public long soLuongNguoiDung() {
+        return this.nguoiDungRepository.count();
+    }
 }

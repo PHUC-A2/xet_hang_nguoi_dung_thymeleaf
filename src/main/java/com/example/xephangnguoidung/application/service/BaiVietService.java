@@ -43,4 +43,9 @@ public class BaiVietService {
     public BaiViet timBaiVietTheoId(Long id) {
         return layBaiVietById(id);
     }
+
+    // lay so luong bai viet
+    public Long soLuongBaiViet() {
+        return baiVietRepository.count();
+    }
 }

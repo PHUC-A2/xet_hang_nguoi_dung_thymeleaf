@@ -9,54 +9,78 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <!-- Icon font from Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+      }
+      /* Navbar */
+      .navbar-brand img {
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+      /* Sidebar cố định */
+      .sidebar {
+        position: fixed;
+        top: 56px; /* chiều cao của navbar */
+        left: 0;
+        width: 250px;
+        height: calc(100vh - 56px);
+        background-color: #343a40;
+        padding: 1rem;
+        overflow-y: auto;
+      }
+      .sidebar h5 {
+        color: #fff;
+        margin-bottom: 1.5rem;
+      }
+      .sidebar .nav-link {
+        color: #adb5bd;
+        font-size: 1.1em;
+        margin: 0.5rem 0;
+        transition: background 0.3s, color 0.3s;
+      }
+      .sidebar .nav-link:hover {
+        background-color: #495057;
+        color: #fff;
+        border-radius: 4px;
+      }
+      /* Nội dung chính */
+      .content {
+        margin-left: 250px;
+        padding: 2rem;
+        padding-top: 80px;
+      }
+      @media (max-width: 768px) {
+        .content { margin-left: 0; }
+        .sidebar { display: none; }
+      }
+    </style>
   </head>
   <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Navbar cố định ở trên cùng -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <span
-            ><img
-              src="/images/avatar/image.png"
-              alt="admin"
-              style="width: 30px; height: 30px; margin-right: 10px"
-          /></span>
+        <a class="navbar-brand" th:href="@{/admin}">
+          <img src="/images/avatar/image.png" alt="Admin" width="40" height="40" />
           Bảng Điều Khiển Quản Trị
         </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Chuyển đổi">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+          <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" th:href="@{/admin}"
-                >Trang Chủ</a
-              >
+              <a class="nav-link" th:href="@{/admin}">Trang Chủ</a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link"
-                th:href="@{/admin/nguoidung/laytatcanguoidung}"
-                >QL người dùng</a
-              >
+              <a class="nav-link active" aria-current="page" th:href="@{/admin/nguoidung/laytatcanguoidung}">QL người dùng</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/admin/diem/bangxephang}"
-                >QL BXH người dùng</a
-              >
+              <a class="nav-link" th:href="@{/admin/diem/bangxephang}">QL BXH người dùng</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" th:href="@{/admin/baiviet}">QL Bài viết</a>
@@ -75,89 +99,119 @@
       </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container mt-5">
-      <h2 class="mb-4 text-center">Danh sách Người Dùng</h2>
+    <!-- Sidebar bên trái -->
+    <div class="sidebar">
+      <h5>Menu Quản Trị</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin}"><i class="fas fa-home me-2"></i>Trang Chủ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/admin/nguoidung/laytatcanguoidung}"><i class="fas fa-users me-2"></i>QL người dùng</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/diem/bangxephang}"><i class="fas fa-chart-line me-2"></i>QL BXH người dùng</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/baiviet}"><i class="fas fa-file-alt me-2"></i>QL Bài viết</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/binhluan}"><i class="fas fa-comments me-2"></i>QL Bình luận</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/luotthich}"><i class="fas fa-thumbs-up me-2"></i>QL Lượt thích</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-sign-out-alt me-2"></i>Đăng Xuất</a>
+        </li>
+      </ul>
+    </div>
 
-      <!-- Search Form -->
-      <form th:action="@{/admin/nguoidung/timkiem}" method="get" class="mb-4">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Tìm kiếm người dùng"
-            name="keyword"
-            th:value="${keyword}"
-          />
-          <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+    <!-- Nội dung chính -->
+    <div class="content">
+      <div class="container mt-5">
+        <h2 class="mb-4 text-center">Danh sách Người Dùng</h2>
+
+        <!-- Search Form -->
+        <form th:action="@{/admin/nguoidung/timkiem}" method="get" class="mb-4">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Tìm kiếm người dùng"
+              name="keyword"
+              th:value="${keyword}"
+            />
+            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+          </div>
+        </form>
+
+        <!-- Button to Add User -->
+        <div class="d-flex justify-content-between mb-3">
+          <a
+            th:href="@{/admin/nguoidung/laytatcanguoidung}"
+            class="btn btn-secondary"
+            >Quay lại</a
+          >
+          <a
+            href="#"
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#addUserModal"
+            ><i class="bi bi-plus-circle"></i> Thêm Người Dùng</a
+          >
         </div>
-      </form>
 
-      <!-- Button to Add User -->
-      <div class="d-flex justify-content-between mb-3">
-        <a
-          th:href="@{/admin/nguoidung/laytatcanguoidung}"
-          class="btn btn-secondary"
-          >Quay lại</a
-        >
-        <a
-          href="#"
-          class="btn btn-success"
-          data-bs-toggle="modal"
-          data-bs-target="#addUserModal"
-          ><i class="bi bi-plus-circle"></i> Thêm Người Dùng</a
-        >
+        <!-- Table of Users -->
+        <table class="table table-striped table-bordered">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Tên Đăng Nhập</th>
+              <th scope="col">Email</th>
+              <th scope="col">Điểm</th>
+              <th scope="col">Cấp Bậc</th>
+              <th scope="col">Vai Trò</th>
+              <th scope="col">Ngày Tạo</th>
+              <th scope="col">Hành Động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Lặp qua danh sách người dùng -->
+            <tr th:each="nguoiDung : ${danhSachNguoiDung}">
+              <td th:text="${nguoiDung.id}"></td>
+              <td th:text="${nguoiDung.tenDangNhap}"></td>
+              <td th:text="${nguoiDung.email}"></td>
+              <td th:text="${nguoiDung.diem}"></td>
+              <td th:text="${nguoiDung.capBac}"></td>
+              <td th:text="${nguoiDung.vaiTro}"></td>
+              <td th:text="${nguoiDung.ngayTao}"></td>
+              <td>
+                <!-- Buttons for Edit and Delete actions -->
+                <a
+                  class="btn btn-warning btn-sm"
+                  href="#"
+                  th:attr="data-id=${nguoiDung.id}"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editUserModal"
+                >
+                  <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+                <form
+                  th:action="@{/admin/nguoidung/xoanguoidung/id/{id}(id=${nguoiDung.id})}"
+                  method="post"
+                  style="display: inline"
+                >
+                  <input type="hidden" name="_method" value="delete" />
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i> Xóa
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-      <!-- Table of Users -->
-      <table class="table table-striped table-bordered">
-        <thead class="table-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Tên Đăng Nhập</th>
-            <th scope="col">Email</th>
-            <th scope="col">Điểm</th>
-            <th scope="col">Cấp Bậc</th>
-            <th scope="col">Vai Trò</th>
-            <th scope="col">Ngày Tạo</th>
-            <th scope="col">Hành Động</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Lặp qua danh sách người dùng -->
-          <tr th:each="nguoiDung : ${danhSachNguoiDung}">
-            <td th:text="${nguoiDung.id}"></td>
-            <td th:text="${nguoiDung.tenDangNhap}"></td>
-            <td th:text="${nguoiDung.email}"></td>
-            <td th:text="${nguoiDung.diem}"></td>
-            <td th:text="${nguoiDung.capBac}"></td>
-            <td th:text="${nguoiDung.vaiTro}"></td>
-            <td th:text="${nguoiDung.ngayTao}"></td>
-            <td>
-              <!-- Buttons for Edit and Delete actions -->
-              <a
-                class="btn btn-warning btn-sm"
-                href="#"
-                th:attr="data-id=${nguoiDung.id}"
-                data-bs-toggle="modal"
-                data-bs-target="#editUserModal"
-              >
-                <i class="bi bi-pencil-square"></i> Sửa
-              </a>
-              <form
-                th:action="@{/admin/nguoidung/xoanguoidung/id/{id}(id=${nguoiDung.id})}"
-                method="post"
-                style="display: inline"
-              >
-                <input type="hidden" name="_method" value="delete" />
-                <button type="submit" class="btn btn-danger btn-sm">
-                  <i class="bi bi-trash"></i> Xóa
-                </button>
-              </form>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
 
     <!-- Modal to Add User -->

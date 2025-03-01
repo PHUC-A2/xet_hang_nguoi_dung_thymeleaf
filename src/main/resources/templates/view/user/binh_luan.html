@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bảng Điều Khiển Quản Trị</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome cho icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS tùy chỉnh cho trang Admin */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+    }
+    /* Sidebar cố định */
+    .sidebar {
+      position: fixed;
+      top: 56px; /* chiều cao của navbar */
+      left: 0;
+      width: 220px;
+      height: calc(100vh - 56px);
+      background-color: #343a40;
+      color: #fff;
+      padding-top: 1rem;
+    }
+    .sidebar .nav-link {
+      color: #adb5bd;
+      padding: 0.75rem 1rem;
+    }
+    .sidebar .nav-link:hover {
+      background-color: #495057;
+      color: #fff;
+    }
+    /* Nội dung chính có margin bên trái */
+    .content {
+      margin-left: 220px;
+      padding: 1rem;
+      padding-top: 70px;
+    }
+    /* Navbar brand: hiển thị avatar */
+    .navbar-brand img {
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar cố định ở trên cùng -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="/images/avatar/image.png" alt="Admin" width="30" height="30" class="d-inline-block align-text-top">
+        Bảng Điều Khiển Quản Trị
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin" aria-controls="navbarAdmin" aria-expanded="false" aria-label="Chuyển đổi điều hướng">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarAdmin">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Bảng điều khiển</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Người dùng</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Cài đặt</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Đăng xuất <i class="fas fa-sign-out-alt"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sidebar bên trái -->
+  <div class="sidebar">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-tachometer-alt me-2"></i> Bảng điều khiển</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-users me-2"></i> Người dùng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-file-alt me-2"></i> Bài viết</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-comments me-2"></i> Bình luận</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-chart-line me-2"></i> Báo cáo</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-cogs me-2"></i> Cài đặt</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Nội dung chính -->
+  <div class="content">
+    <div class="container-fluid">
+      <h1 class="mb-4">Chào mừng, Quản trị viên!</h1>
+      <!-- Các thẻ card thống kê -->
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Người dùng</h5>
+              <p class="card-text display-6">1.234</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Bài viết</h5>
+              <p class="card-text display-6">567</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Bình luận</h5>
+              <p class="card-text display-6">3.210</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Báo cáo</h5>
+              <p class="card-text display-6">45</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card hiển thị hoạt động gần đây -->
+      <div class="card mb-4">
+        <div class="card-header">
+          Hoạt động gần đây
+        </div>
+        <div class="card-body">
+          <p>Đây là bảng điều khiển quản trị, nơi bạn có thể quản lý người dùng, bài viết, bình luận và các mục khác. Tùy chỉnh trang này theo nhu cầu của bạn!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS và Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

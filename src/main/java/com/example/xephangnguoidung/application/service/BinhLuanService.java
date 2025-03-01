@@ -85,4 +85,9 @@ public class BinhLuanService {
     public void capNhatBinhLuan(BinhLuan binhLuan) {
         binhLuanRepository.save(binhLuan);
     }
+
+    // Lấy số lượng bình luận
+    public Long soLuongBinhLuan() {
+        return binhLuanRepository.count();
+    }
 }
