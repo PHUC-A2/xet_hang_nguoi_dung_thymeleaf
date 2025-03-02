@@ -2,7 +2,8 @@ package com.example.xephangnguoidung.presentation.controller.admin;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import com.example.xephangnguoidung.data.entity.NguoiDung;
 @Controller
 @RequestMapping("/admin/baiviet")
 public class QuanLyBaiVietController {
+    private static final Logger logger = LoggerFactory.getLogger(QuanLyBaiVietController.class);
     private final BaiVietService baiVietService;
     private final NguoiDungService nguoiDungService;
 
@@ -38,12 +40,30 @@ public class QuanLyBaiVietController {
     }
 
     @PostMapping("/tao")
-    public String taoBaiViet(BaiViet baiViet) {
-        // Giả sử bạn có một người dùng mặc định hoặc lấy người dùng từ session
-        NguoiDung nguoiDung = nguoiDungService.layNguoiDungById(1L); // Thay thế 1L bằng ID người dùng hợp lệ
-        baiViet.setNguoiDung(nguoiDung);
-        baiVietService.luuBaiViet(baiViet);
-        return "redirect:/admin/baiviet";
+    public String taoBaiViet(@RequestParam Long nguoiDungId, BaiViet baiViet) {
+        try {
+            logger.info("Bắt đầu tạo bài viết với ID người dùng: " + nguoiDungId);
+
+            // Lấy thông tin người dùng từ ID
+            NguoiDung nguoiDung = nguoiDungService.layNguoiDungById(nguoiDungId);
+            if (nguoiDung == null) {
+                logger.error("Không tìm thấy người dùng với ID: " + nguoiDungId);
+                throw new RuntimeException("Không tìm thấy người dùng!");
+            }
+
+            // Gán người dùng vào bài viết
+            baiViet.setNguoiDung(nguoiDung);
+            logger.info("Đã gán người dùng vào bài viết");
+
+            // Lưu bài viết vào database
+            baiVietService.luuBaiViet(baiViet);
+            logger.info("Đã lưu bài viết vào database");
+
+            return "redirect:/admin/baiviet"; // Corrected redirect URL
+        } catch (Exception e) {
+            logger.error("Lỗi khi tạo bài viết", e);
+            return "redirect:/error";
+        }
     }
 
     @GetMapping("/sua/{id}")
