@@ -3,6 +3,7 @@ package com.example.xephangnguoidung.application.service;
 import com.example.xephangnguoidung.data.entity.BaiViet;
 import com.example.xephangnguoidung.data.entity.BinhLuan;
 import com.example.xephangnguoidung.data.entity.NguoiDung;
+import com.example.xephangnguoidung.data.enums.LoaiHoatDong;
 import com.example.xephangnguoidung.data.repository.BaiVietRepository;
 import com.example.xephangnguoidung.data.repository.BinhLuanRepository;
 import com.example.xephangnguoidung.data.repository.NguoiDungRepository;
@@ -18,30 +19,29 @@ public class BinhLuanService {
     private final BinhLuanRepository binhLuanRepository;
     private final BaiVietRepository baiVietRepository;
     private final NguoiDungRepository nguoiDungRepository;
+    private final DiemNguoiDungService diemNguoiDungService;
 
     public BinhLuanService(BinhLuanRepository binhLuanRepository, BaiVietRepository baiVietRepository,
-            NguoiDungRepository nguoiDungRepository) {
+            NguoiDungRepository nguoiDungRepository, DiemNguoiDungService diemNguoiDungService) {
         this.binhLuanRepository = binhLuanRepository;
         this.baiVietRepository = baiVietRepository;
         this.nguoiDungRepository = nguoiDungRepository;
+        this.diemNguoiDungService = diemNguoiDungService;
     }
 
     // Thêm bình luận
-    public void themBinhLuan(BinhLuan binhLuan) {
-        NguoiDung nguoiDung = nguoiDungRepository.findById(binhLuan.getNguoiDung().getId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
-
-        BaiViet baiViet = baiVietRepository.findById(binhLuan.getBaiViet().getId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
+    @Transactional
+    public BinhLuan themBinhLuan(Long nguoiDungId, BinhLuan binhLuan) {
+        NguoiDung nguoiDung = nguoiDungRepository.findById(nguoiDungId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng với ID: " + nguoiDungId));
 
         binhLuan.setNguoiDung(nguoiDung);
-        binhLuan.setBaiViet(baiViet);
+        BinhLuan binhLuanMoi = binhLuanRepository.save(binhLuan);
 
-        binhLuanRepository.save(binhLuan);
+        // Gọi phương thức tinhDiem để cập nhật điểm và cấp bậc
+        diemNguoiDungService.tinhDiem(nguoiDungId, LoaiHoatDong.BINH_LUAN);
 
-        // Cập nhật số lượng bình luận trong bảng BaiViet
-        baiViet.setSoLuotBinhLuan(baiViet.getSoLuotBinhLuan() + 1);
-        baiVietRepository.save(baiViet);
+        return binhLuanMoi;
     }
 
     // Xóa bình luận
@@ -55,6 +55,9 @@ public class BinhLuanService {
         // Cập nhật số lượt bình luận trong bảng BaiViet
         baiViet.setSoLuotBinhLuan(Math.max(0, baiViet.getSoLuotBinhLuan() - 1));
         baiVietRepository.save(baiViet);
+
+        // Trừ điểm khi xóa bình luận
+        diemNguoiDungService.tinhDiem(binhLuan.getNguoiDung().getId(), LoaiHoatDong.BINH_LUAN, -1);
     }
 
     // Lấy danh sách bình luận của bài viết

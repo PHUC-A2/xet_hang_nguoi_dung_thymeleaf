@@ -3,6 +3,7 @@ package com.example.xephangnguoidung.application.service;
 import com.example.xephangnguoidung.data.entity.BaiViet;
 import com.example.xephangnguoidung.data.entity.LuotThich;
 import com.example.xephangnguoidung.data.entity.NguoiDung;
+import com.example.xephangnguoidung.data.enums.LoaiHoatDong;
 import com.example.xephangnguoidung.data.repository.BaiVietRepository;
 import com.example.xephangnguoidung.data.repository.LuotThichRepository;
 import com.example.xephangnguoidung.data.repository.NguoiDungRepository;
@@ -19,12 +20,14 @@ public class LuotThichService {
         private final LuotThichRepository luotThichRepository;
         private final BaiVietRepository baiVietRepository;
         private final NguoiDungRepository nguoiDungRepository;
+        private final DiemNguoiDungService diemNguoiDungService;
 
         public LuotThichService(LuotThichRepository luotThichRepository, BaiVietRepository baiVietRepository,
-                        NguoiDungRepository nguoiDungRepository) {
+                        NguoiDungRepository nguoiDungRepository, DiemNguoiDungService diemNguoiDungService) {
                 this.luotThichRepository = luotThichRepository;
                 this.baiVietRepository = baiVietRepository;
                 this.nguoiDungRepository = nguoiDungRepository;
+                this.diemNguoiDungService = diemNguoiDungService;
         }
 
         // Thêm lượt thích
@@ -48,6 +51,9 @@ public class LuotThichService {
                 // Cập nhật số lượt thích trong bảng BaiViet
                 baiViet.setSoLuotThich(baiViet.getSoLuotThich() + 1);
                 baiVietRepository.save(baiViet);
+
+                // Gọi phương thức tinhDiem để cập nhật điểm và cấp bậc
+                diemNguoiDungService.tinhDiem(nguoiDungId, LoaiHoatDong.DUOC_THICH);
         }
 
         // Xóa lượt thích
@@ -66,6 +72,9 @@ public class LuotThichService {
                 // Cập nhật số lượt thích trong bảng BaiViet
                 baiViet.setSoLuotThich(Math.max(0, baiViet.getSoLuotThich() - 1));
                 baiVietRepository.save(baiViet);
+
+                // Trừ điểm khi xóa lượt thích
+                diemNguoiDungService.tinhDiem(nguoiDungId, LoaiHoatDong.DUOC_THICH, -1);
         }
 
         // Lấy danh sách ID người dùng thích bài viết

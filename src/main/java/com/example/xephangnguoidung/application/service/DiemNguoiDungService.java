@@ -19,8 +19,7 @@ public class DiemNguoiDungService {
     private final NguoiDungService nguoiDungService;
 
     public DiemNguoiDungService(DiemNguoiDungRepository diemNguoiDungRepository,
-            NguoiDungRepository nguoiDungRepository,
-            NguoiDungService nguoiDungService) {
+            NguoiDungRepository nguoiDungRepository, NguoiDungService nguoiDungService) {
         this.diemNguoiDungRepository = diemNguoiDungRepository;
         this.nguoiDungRepository = nguoiDungRepository;
         this.nguoiDungService = nguoiDungService;
@@ -28,39 +27,29 @@ public class DiemNguoiDungService {
 
     @Transactional
     public void tinhDiem(Long nguoiDungId, LoaiHoatDong loaiHoatDong) {
-        System.out.println("✅ Bắt đầu tính điểm cho nguoiDungId=" + nguoiDungId + ", Hoạt động: " + loaiHoatDong);
+        tinhDiem(nguoiDungId, loaiHoatDong, 1);
+    }
 
+    @Transactional
+    public void tinhDiem(Long nguoiDungId, LoaiHoatDong loaiHoatDong, int heSo) {
         NguoiDung nguoiDung = nguoiDungRepository.findById(nguoiDungId)
-                .orElseThrow(() -> new RuntimeException("❌ Không tìm thấy người dùng với ID: " + nguoiDungId));
-        System.out.println("✅ Tìm thấy người dùng: " + nguoiDung.getTenDangNhap());
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng với ID: " + nguoiDungId));
 
         Optional<DiemNguoiDung> diemOptional = diemNguoiDungRepository.findByNguoiDungAndLoaiHoatDong(nguoiDung,
                 loaiHoatDong);
-        System.out.println("🔍 Tìm thấy điểm trong DB? " + diemOptional.isPresent());
-
         DiemNguoiDung diemNguoiDung = diemOptional.orElse(new DiemNguoiDung());
 
         if (diemNguoiDung.getId() == null) {
-            System.out.println("🆕 Tạo mới điểm người dùng!");
             diemNguoiDung.setNguoiDung(nguoiDung);
             diemNguoiDung.setLoaiHoatDong(loaiHoatDong);
             diemNguoiDung.setDiem(0);
         }
 
-        System.out.println("🎯 Điểm trước khi cập nhật: " + diemNguoiDung.getDiem());
-        diemNguoiDung.setDiem(diemNguoiDung.getDiem() + loaiHoatDong.getDiem());
-        System.out.println("📌 Điểm sau khi cập nhật: " + diemNguoiDung.getDiem());
+        diemNguoiDung.setDiem(diemNguoiDung.getDiem() + loaiHoatDong.getDiem() * heSo);
+        diemNguoiDungRepository.save(diemNguoiDung);
 
-        try {
-            diemNguoiDungRepository.save(diemNguoiDung);
-            diemNguoiDungRepository.flush(); // Ép lưu ngay
-            System.out.println("✅ Điểm đã lưu thành công!");
-        } catch (Exception e) {
-            System.out.println("❌ Lỗi khi lưu điểm: " + e.getMessage());
-        }
-
-        int tongDiem = tinhTongDiemByNguoiDungId(nguoiDungId);
-        System.out.println("🔹 Tổng điểm sau cập nhật: " + tongDiem);
+        // Cập nhật tổng điểm và cấp bậc sau khi thay đổi điểm
+        nguoiDungService.capNhatCapBac(nguoiDungId);
     }
 
     // Tổng số điểm

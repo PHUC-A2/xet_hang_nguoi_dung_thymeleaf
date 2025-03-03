@@ -20,7 +20,7 @@ public class NguoiDung {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true , columnDefinition = "NVARCHAR(255)")
     private String tenDangNhap;
 
     @Column(nullable = false)

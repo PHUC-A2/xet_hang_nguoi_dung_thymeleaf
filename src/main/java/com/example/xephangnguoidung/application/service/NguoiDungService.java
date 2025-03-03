@@ -65,7 +65,7 @@ public class NguoiDungService {
         nguoiDungHienTai.setSoLanDangNhap(nguoiDung.getSoLanDangNhap());
 
         // ✅ Cập nhật cấp bậc nếu cần
-        capNhatCapBac(nguoiDungHienTai);
+        capNhatCapBac(nguoiDungHienTai.getId());
 
         return nguoiDungRepository.save(nguoiDungHienTai);
     }
@@ -86,17 +86,18 @@ public class NguoiDungService {
 
     // ✅ 9️⃣ Cập nhật cấp bậc
     @Transactional
-    public void capNhatCapBac(NguoiDung nguoiDung) {
-        if (nguoiDung == null) {
-            throw new RuntimeException("Người dùng không hợp lệ!");
-        }
+    public void capNhatCapBac(Long nguoiDungId) {
+        // 1. Lấy người dùng theo ID
+        NguoiDung nguoiDung = layNguoiDungById(nguoiDungId);
 
-        Integer tongDiem = diemNguoiDungRepository.tinhTongDiemByNguoiDungId(nguoiDung.getId());
+        // 2. Tính tổng điểm
+        Integer tongDiem = diemNguoiDungRepository.tinhTongDiemByNguoiDungId(nguoiDungId);
         if (tongDiem == null) {
             tongDiem = 0;
         }
-        CapBac capBacMoi;
 
+        // 3. Xác định cấp bậc
+        CapBac capBacMoi;
         if (tongDiem >= 10000) {
             capBacMoi = CapBac.VIP;
         } else if (tongDiem >= 5000) {
@@ -111,16 +112,10 @@ public class NguoiDungService {
             capBacMoi = CapBac.DONG;
         }
 
-        // Debug trước khi cập nhật
-        System.out.println("🚀 Trước cập nhật: " + nguoiDung.getTenDangNhap() + " - Điểm: " + tongDiem + " - Cấp bậc: "
-                + nguoiDung.getCapBac());
-
+        // 4. Cập nhật cấp bậc nếu thay đổi
         if (!capBacMoi.equals(nguoiDung.getCapBac())) {
             nguoiDung.setCapBac(capBacMoi);
             nguoiDungRepository.save(nguoiDung);
-            System.out.println("✅ Đã cập nhật cấp bậc mới: " + capBacMoi);
-        } else {
-            System.out.println("⚠️ Cấp bậc không thay đổi, không cần cập nhật.");
         }
     }
 

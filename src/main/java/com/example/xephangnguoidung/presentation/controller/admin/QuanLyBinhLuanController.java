@@ -42,7 +42,7 @@ public class QuanLyBinhLuanController {
         BaiViet baiViet = baiVietService.timBaiVietTheoId(baiVietId);
         binhLuan.setBaiViet(baiViet);
 
-        binhLuanService.themBinhLuan(binhLuan);
+        binhLuanService.themBinhLuan(nguoiDung.getId(),binhLuan);
         return "redirect:/admin/binhluan";
     }
 

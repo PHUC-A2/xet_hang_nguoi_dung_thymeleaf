@@ -1,9 +1,9 @@
 package com.example.xephangnguoidung.data.enums;
 
 public enum LoaiHoatDong {
-    DANG_NHAP(100), // Đăng nhập
-    VIET_BAI(200), // Viết bài
-    BINH_LUAN(300), // Bình luận
+    DANG_NHAP(2000), // Đăng nhập
+    VIET_BAI(3000), // Viết bài
+    BINH_LUAN(1000), // Bình luận
     DUOC_THICH(400); // Được thích
 
     private final int diem;

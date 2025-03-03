@@ -25,7 +25,7 @@ public class DiemNguoiDung {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private LoaiHoatDong loaiHoatDong;
+    private LoaiHoatDong loaiHoatDong = LoaiHoatDong.DANG_NHAP;
 
     @Column(nullable = true)
     private int diem = 0;

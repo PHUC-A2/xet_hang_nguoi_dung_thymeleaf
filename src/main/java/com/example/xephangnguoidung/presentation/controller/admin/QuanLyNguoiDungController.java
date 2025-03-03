@@ -67,7 +67,7 @@ public class QuanLyNguoiDungController {
 
         // Lưu người dùng trước, sau đó cập nhật cấp bậc
         nguoiDungService.suaNguoiDung(id, nguoiDung);
-        nguoiDungService.capNhatCapBac(nguoiDung);
+        nguoiDungService.capNhatCapBac(nguoiDung.getId());
 
         // Thêm thông báo thành công
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật người dùng thành công!");
