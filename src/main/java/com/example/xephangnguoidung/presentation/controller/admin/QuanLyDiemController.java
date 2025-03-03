@@ -25,12 +25,13 @@ public class QuanLyDiemController {
 
     @PostMapping("/tinhdiem")
     public String tinhDiem(@RequestParam Long nguoiDungId, @RequestParam LoaiHoatDong loaiHoatDong) {
+        System.out.println(
+                "✅ Gọi API /admin/diem/tinhdiem với nguoiDungId=" + nguoiDungId + " và loaiHoatDong=" + loaiHoatDong);
+
         diemNguoiDungService.tinhDiem(nguoiDungId, loaiHoatDong);
 
         // Lấy lại người dùng sau khi điểm đã cập nhật
         NguoiDung nguoiDungCapNhat = nguoiDungService.layNguoiDungById(nguoiDungId);
-
-        // Cập nhật cấp bậc nếu cần
         nguoiDungService.capNhatCapBac(nguoiDungCapNhat);
 
         return "redirect:/admin";

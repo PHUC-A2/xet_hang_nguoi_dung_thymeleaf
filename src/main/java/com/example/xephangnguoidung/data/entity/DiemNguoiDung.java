@@ -13,6 +13,7 @@ import com.example.xephangnguoidung.data.enums.LoaiHoatDong;
 @NoArgsConstructor
 @Data
 @Entity
+@Table(name = "diem_nguoi_dung")
 public class DiemNguoiDung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,7 @@ public class DiemNguoiDung {
     @Column(nullable = false)
     private LoaiHoatDong loaiHoatDong;
 
+    @Column(nullable = true)
     private int diem = 0;
 
     @Column(updatable = false)
@@ -34,10 +36,5 @@ public class DiemNguoiDung {
     @PrePersist
     protected void onCreate() {
         this.ngayTao = LocalDateTime.now();
-    }
-
-    public void tangDiem(int diem) {
-        this.diem += diem;
-
     }
 }
