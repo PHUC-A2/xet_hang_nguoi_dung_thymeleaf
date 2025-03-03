@@ -82,7 +82,7 @@
                         <a class="nav-link active" aria-current="page" th:href="@{/admin/luotthich}">QL Lượt thích</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Đăng Xuất</a>
+                        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt me-2"></i>Đăng Xuất</a>
                     </li>
                 </ul>
             </div>
@@ -125,6 +125,13 @@
                 <div class="input-group">
                     <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm lượt thích...">
                     <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                </div>
+            </form>
+            <form th:action="@{/admin/luotthich/tao}" method="post" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="nguoiDungId" class="form-control" placeholder="ID Người Dùng">
+                    <input type="text" name="baiVietId" class="form-control" placeholder="ID Bài Viết">
+                    <button class="btn btn-success" type="submit">Thêm Lượt Thích</button>
                 </div>
             </form>
             <table class="table table-striped">

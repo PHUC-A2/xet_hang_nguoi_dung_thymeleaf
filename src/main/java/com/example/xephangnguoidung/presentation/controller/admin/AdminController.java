@@ -16,7 +16,6 @@ public class AdminController {
     private final BinhLuanService binhLuanService;
     private final DiemNguoiDungService diemNguoiDungService;
 
-    
     public AdminController(NguoiDungService nguoiDungService, BaiVietService baiVietService,
             BinhLuanService binhLuanService, DiemNguoiDungService diemNguoiDungService) {
         this.nguoiDungService = nguoiDungService;
@@ -25,25 +24,22 @@ public class AdminController {
         this.diemNguoiDungService = diemNguoiDungService;
     }
 
-
     @GetMapping("/admin")
     public String trangChuAdmin(Model model) {
-
         // lấy số lượng người dùng
         Long slNguoiDung = this.nguoiDungService.soLuongNguoiDung();
         model.addAttribute("soLuongNguoiDung", slNguoiDung);
 
-        // lay so luong bai viet
+        // lấy số lượng bài viết
         Long slBaiViet = this.baiVietService.soLuongBaiViet();
         model.addAttribute("soLuongBaiViet", slBaiViet);
 
-        // lay so luong binh luan
+        // lấy số lượng bình luận
         Long slBinhLuan = this.binhLuanService.soLuongBinhLuan();
         model.addAttribute("soLuongBinhLuan", slBinhLuan);
 
-
-        // lay tong so diem
-        Long tongSoDiem = this.diemNguoiDungService.tongSoDiem();
+        // lấy tổng số điểm
+        Integer tongSoDiem = this.diemNguoiDungService.tongSoDiemTatCaNguoiDung();
         model.addAttribute("tongSoDiem", tongSoDiem);
 
         return "admin/trang_chu_admin";

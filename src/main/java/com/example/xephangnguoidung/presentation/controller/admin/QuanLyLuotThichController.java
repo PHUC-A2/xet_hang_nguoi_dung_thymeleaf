@@ -20,10 +20,15 @@ public class QuanLyLuotThichController {
     }
 
     // Thêm lượt thích
-    @PostMapping("/tao/{nguoiDungId}/{baiVietId}")
-    public ResponseEntity<String> themLuotThich(@PathVariable Long nguoiDungId, @PathVariable Long baiVietId) {
-        luotThichService.themLuotThich(nguoiDungId, baiVietId);
-        return ResponseEntity.ok("Đã thêm lượt thích thành công.");
+    @PostMapping("/tao")
+    public String themLuotThich(@RequestParam Long nguoiDungId, @RequestParam Long baiVietId, Model model) {
+        try {
+            luotThichService.themLuotThich(nguoiDungId, baiVietId);
+            model.addAttribute("message", "Đã thêm lượt thích thành công.");
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/luotthich";
     }
 
     // Xem tất cả lượt thích của một bài viết
@@ -35,9 +40,14 @@ public class QuanLyLuotThichController {
 
     // Xóa lượt thích của một người dùng với bài viết
     @PostMapping("/xoa/{nguoiDungId}/{baiVietId}")
-    public ResponseEntity<String> xoaLuotThich(@PathVariable Long nguoiDungId, @PathVariable Long baiVietId) {
-        luotThichService.xoaLuotThich(nguoiDungId, baiVietId);
-        return ResponseEntity.ok("Đã xóa lượt thích thành công.");
+    public String xoaLuotThich(@PathVariable Long nguoiDungId, @PathVariable Long baiVietId, Model model) {
+        try {
+            luotThichService.xoaLuotThich(nguoiDungId, baiVietId);
+            model.addAttribute("message", "Đã xóa lượt thích thành công.");
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/luotthich";
     }
 
     // Xem tổng số lượt thích trên toàn hệ thống

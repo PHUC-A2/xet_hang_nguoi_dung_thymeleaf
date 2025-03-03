@@ -16,4 +16,7 @@ public interface DiemNguoiDungRepository extends JpaRepository<DiemNguoiDung, Lo
 
     @Query("SELECT SUM(d.diem) FROM DiemNguoiDung d WHERE d.nguoiDung.id = :nguoiDungId")
     Integer tinhTongDiemByNguoiDungId(@Param("nguoiDungId") Long nguoiDungId);
+    
+    @Query("SELECT SUM(d.diem) FROM DiemNguoiDung d")
+    Integer tinhTongDiemTatCaNguoiDung();
 }

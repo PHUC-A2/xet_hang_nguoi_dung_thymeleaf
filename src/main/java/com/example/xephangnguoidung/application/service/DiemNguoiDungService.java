@@ -52,9 +52,14 @@ public class DiemNguoiDungService {
         nguoiDungService.capNhatCapBac(nguoiDungId);
     }
 
-    // Tổng số điểm
-    public Long tongSoDiem() {
-        return diemNguoiDungRepository.count();
+    // Tổng số điểm của một người dùng
+    public Integer tongSoDiem(Long nguoiDungId) {
+        return this.diemNguoiDungRepository.tinhTongDiemByNguoiDungId(nguoiDungId);
+    }
+
+    // Tổng số điểm của tất cả người dùng
+    public Integer tongSoDiemTatCaNguoiDung() {
+        return this.diemNguoiDungRepository.tinhTongDiemTatCaNguoiDung();
     }
 
     // Thêm phương thức tính tổng điểm với kiểm tra null
