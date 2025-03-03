@@ -8,6 +8,8 @@ import com.example.xephangnguoidung.data.repository.NguoiDungRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class DiemNguoiDungService {
@@ -17,7 +19,8 @@ public class DiemNguoiDungService {
     private final NguoiDungService nguoiDungService;
 
     public DiemNguoiDungService(DiemNguoiDungRepository diemNguoiDungRepository,
-            NguoiDungRepository nguoiDungRepository, NguoiDungService nguoiDungService) {
+                                NguoiDungRepository nguoiDungRepository, 
+                                NguoiDungService nguoiDungService) {
         this.diemNguoiDungRepository = diemNguoiDungRepository;
         this.nguoiDungRepository = nguoiDungRepository;
         this.nguoiDungService = nguoiDungService;
@@ -37,21 +40,21 @@ public class DiemNguoiDungService {
         diemNguoiDung.setDiem(diem);
         diemNguoiDungRepository.save(diemNguoiDung);
 
-        // Cập nhật tổng điểm của người dùng
-        nguoiDung.setDiem(nguoiDung.getDiem() + diem);
-        nguoiDungRepository.save(nguoiDung);
-        nguoiDungRepository.flush(); // Đảm bảo điểm được cập nhật ngay
-
-        // Kiểm tra log
-        System.out.println("Điểm sau khi cập nhật: " + nguoiDung.getDiem());
+        // Tính tổng điểm từ bảng DiemNguoiDung
+        int tongDiem = tinhTongDiemByNguoiDungId(nguoiDungId);
+        System.out.println("Tổng điểm sau khi cập nhật: " + tongDiem);
 
         // Cập nhật cấp bậc
         nguoiDungService.capNhatCapBac(nguoiDung);
     }
 
-    // tong so diem
+    // Tổng số điểm
     public Long tongSoDiem() {
         return diemNguoiDungRepository.count();
     }
 
+    // Thêm phương thức tính tổng điểm với kiểm tra null
+    public int tinhTongDiemByNguoiDungId(Long nguoiDungId) {
+        return Optional.ofNullable(diemNguoiDungRepository.tinhTongDiemByNguoiDungId(nguoiDungId)).orElse(0);
+    }
 }

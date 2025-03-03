@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -40,9 +39,19 @@ public class QuanLyDiemController {
     @GetMapping("/bangxephang")
     public String bangXepHangNguoiDung(Model model) {
         List<NguoiDung> danhSachNguoiDung = nguoiDungService.layTatCaNguoiDung();
-        Collections.sort(danhSachNguoiDung, Comparator.comparingInt(NguoiDung::getDiem)); // Sắp xếp từ thấp 
-                                                                                                     // đến cao
-        model.addAttribute("danhSachNguoiDung", danhSachNguoiDung);
+        if (danhSachNguoiDung.isEmpty()) {
+            model.addAttribute("danhSachNguoiDung", Collections.emptyList());
+        } else {
+            // Sắp xếp danh sách người dùng theo tổng điểm từ cao đến thấp
+            Collections.sort(danhSachNguoiDung, (nd1, nd2) -> {
+                int tongDiem1 = diemNguoiDungService.tinhTongDiemByNguoiDungId(nd1.getId());
+                int tongDiem2 = diemNguoiDungService.tinhTongDiemByNguoiDungId(nd2.getId());
+                return Integer.compare(tongDiem2, tongDiem1);
+            });
+            model.addAttribute("danhSachNguoiDung", danhSachNguoiDung);
+        }
+        // Đảm bảo rằng diemNguoiDungService không bị null trong template
+        model.addAttribute("diemNguoiDungService", diemNguoiDungService);
         return "admin/bang_xep_hang_nguoidung";
     }
 }

@@ -35,4 +35,9 @@ public class DiemNguoiDung {
     protected void onCreate() {
         this.ngayTao = LocalDateTime.now();
     }
+
+    public void tangDiem(int diem) {
+        this.diem += diem;
+
+    }
 }

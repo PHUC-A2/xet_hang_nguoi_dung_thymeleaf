@@ -29,8 +29,6 @@ public class NguoiDung {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private int diem = 0;
-
     @Enumerated(EnumType.STRING)
     private CapBac capBac = CapBac.DONG;
 

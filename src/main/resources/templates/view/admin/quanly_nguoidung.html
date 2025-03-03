@@ -232,7 +232,9 @@
               <td th:text="${nguoiDung.id}"></td>
               <td th:text="${nguoiDung.tenDangNhap}"></td>
               <td th:text="${nguoiDung.email}"></td>
-              <td th:text="${nguoiDung.diem}"></td>
+              <td
+                th:text="${diemNguoiDungService.tinhTongDiemByNguoiDungId(nguoiDung.id)}"
+              ></td>
               <td th:text="${nguoiDung.capBac}"></td>
               <td th:text="${nguoiDung.vaiTro}"></td>
               <td th:text="${nguoiDung.ngayTao}"></td>
@@ -320,16 +322,7 @@
                   required
                 />
               </div>
-              <div class="mb-3">
-                <label for="diem" class="form-label">Điểm</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="diem"
-                  name="diem"
-                  required
-                />
-              </div>
+
               <div class="mb-3">
                 <label for="vaiTro" class="form-label">Vai Trò</label>
                 <select class="form-control" id="vaiTro" name="vaiTro" required>
@@ -400,16 +393,7 @@
                   required
                 />
               </div>
-              <div class="mb-3">
-                <label for="editDiem" class="form-label">Điểm</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="editDiem"
-                  name="diem"
-                  required
-                />
-              </div>
+
               <div class="mb-3">
                 <label for="editVaiTro" class="form-label">Vai Trò</label>
                 <select
@@ -453,7 +437,6 @@
                 data.tenDangNhap;
               document.getElementById("editMatKhau").value = data.matKhau;
               document.getElementById("editEmail").value = data.email;
-              document.getElementById("editDiem").value = data.diem;
               document.getElementById("editVaiTro").value = data.vaiTro;
               document
                 .getElementById("editUserForm")

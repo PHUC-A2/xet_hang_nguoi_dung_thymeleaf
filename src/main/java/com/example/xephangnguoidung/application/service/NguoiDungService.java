@@ -7,14 +7,17 @@ import org.springframework.stereotype.Service;
 
 import com.example.xephangnguoidung.data.entity.NguoiDung;
 import com.example.xephangnguoidung.data.enums.CapBac;
+import com.example.xephangnguoidung.data.repository.DiemNguoiDungRepository;
 import com.example.xephangnguoidung.data.repository.NguoiDungRepository;
 
 @Service
 public class NguoiDungService {
     private final NguoiDungRepository nguoiDungRepository;
+    private final DiemNguoiDungRepository diemNguoiDungRepository;
 
-    public NguoiDungService(NguoiDungRepository nguoiDungRepository) {
+    public NguoiDungService(NguoiDungRepository nguoiDungRepository, DiemNguoiDungRepository diemNguoiDungRepository) {
         this.nguoiDungRepository = nguoiDungRepository;
+        this.diemNguoiDungRepository = diemNguoiDungRepository;
     }
 
     // ✅ 1️⃣ Tạo người dùng
@@ -58,7 +61,6 @@ public class NguoiDungService {
         nguoiDungHienTai.setTenDangNhap(nguoiDung.getTenDangNhap());
         nguoiDungHienTai.setMatKhau(nguoiDung.getMatKhau());
         nguoiDungHienTai.setEmail(nguoiDung.getEmail());
-        nguoiDungHienTai.setDiem(nguoiDung.getDiem());
         nguoiDungHienTai.setVaiTro(nguoiDung.getVaiTro());
         nguoiDungHienTai.setSoLanDangNhap(nguoiDung.getSoLanDangNhap());
 
@@ -77,11 +79,6 @@ public class NguoiDungService {
         nguoiDungRepository.deleteById(id);
     }
 
-    // ✅ 7️⃣ Lấy bảng xếp hạng theo điểm
-    public List<NguoiDung> layBangXepHang() {
-        return nguoiDungRepository.findAllByOrderByDiemDesc();
-    }
-
     // ✅ 8️⃣ Tìm kiếm người dùng
     public List<NguoiDung> timKiemNguoiDung(String keyword) {
         return nguoiDungRepository.findByTenDangNhapContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
@@ -94,25 +91,28 @@ public class NguoiDungService {
             throw new RuntimeException("Người dùng không hợp lệ!");
         }
 
-        int diem = nguoiDung.getDiem();
+        Integer tongDiem = diemNguoiDungRepository.tinhTongDiemByNguoiDungId(nguoiDung.getId());
+        if (tongDiem == null) {
+            tongDiem = 0;
+        }
         CapBac capBacMoi;
 
-        if (diem >= 10000) {
+        if (tongDiem >= 10000) {
             capBacMoi = CapBac.VIP;
-        } else if (diem >= 5000) {
+        } else if (tongDiem >= 5000) {
             capBacMoi = CapBac.KIM_CUONG;
-        } else if (diem >= 2000) {
+        } else if (tongDiem >= 2000) {
             capBacMoi = CapBac.BACH_KIM;
-        } else if (diem >= 1000) {
+        } else if (tongDiem >= 1000) {
             capBacMoi = CapBac.VANG;
-        } else if (diem >= 500) {
+        } else if (tongDiem >= 500) {
             capBacMoi = CapBac.BAC;
         } else {
             capBacMoi = CapBac.DONG;
         }
 
         // Debug trước khi cập nhật
-        System.out.println("🚀 Trước cập nhật: " + nguoiDung.getTenDangNhap() + " - Điểm: " + diem + " - Cấp bậc: "
+        System.out.println("🚀 Trước cập nhật: " + nguoiDung.getTenDangNhap() + " - Điểm: " + tongDiem + " - Cấp bậc: "
                 + nguoiDung.getCapBac());
 
         if (!capBacMoi.equals(nguoiDung.getCapBac())) {
