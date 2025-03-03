@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jodit Editor trong Spring Boot</title>
+    <script src="https://cdn.jsdelivr.net/npm/jodit@latest/build/jodit.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jodit@latest/build/jodit.min.css">
+</head>
+<body>
+    <h2>Jodit Editor với Thymeleaf</h2>
+    <form th:action="@{/submit}" method="post">
+        <textarea id="editor" name="content"></textarea>
+        <button type="submit">Gửi</button>
+    </form>
+
+    <script>
+        const editor = new Jodit("#editor", {
+            height: 300,
+            toolbarButtonSize: "middle",
+            language: "vi",  // Hỗ trợ tiếng Việt
+        });
+    </script>
+</body>
+</html>
