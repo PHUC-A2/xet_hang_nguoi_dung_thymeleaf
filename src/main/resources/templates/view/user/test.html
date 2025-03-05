@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIP - Hoạt Động Người Dùng</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/jodit@3.24.7/build/jodit.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.1/emojionearea.min.css"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jodit@3.24.7/build/jodit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.1/emojionearea.min.js"></script>
+
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #121212;
+        color: #ffd700;
+      }
+      .navbar {
+        background: linear-gradient(90deg, #222, #444);
+        border-bottom: 2px solid #ffd700;
+      }
+      .navbar-brand img {
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .content {
+        padding: 2rem;
+        padding-top: 100px;
+      }
+      .post-card {
+        border: 1px solid #ffd700;
+        border-radius: 12px;
+        background: #1e1e1e;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding: 1.5rem;
+      }
+      .post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5);
+      }
+      .btn-custom {
+        background: linear-gradient(45deg, #ffd700, #ffa500);
+        color: black;
+        border-radius: 8px;
+        padding: 8px 16px;
+      }
+      .btn-custom:hover {
+        background: linear-gradient(45deg, #ffa500, #ff8c00);
+      }
+      .comment-section {
+        background: #222;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ffd700;
+      }
+      .text-muted {
+        color: #ffd700 !important;
+      }
+      .comment-box {
+        display: flex;
+        align-items: center;
+        background: #333;
+        padding: 5px;
+        border-radius: 20px;
+      }
+      .comment-box textarea {
+        height: 30px;
+        border: none;
+        background: transparent;
+        color: white;
+        flex-grow: 1;
+        resize: none;
+        padding: 5px 10px;
+        font-size: 14px;
+      }
+      .comment-box button {
+        border: none;
+        background: none;
+        color: #ffd700;
+        font-size: 16px;
+      }
+      .jodit-wysiwyg {
+        background-color: #1e1e1e !important;
+        color: #ffd700 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="@{/user}">
+          <img
+            src="/images/avatar/image.png"
+            alt="User"
+            width="40"
+            height="40"
+          />
+          Trang Chủ VIP
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarContent"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/user}"
+                ><i class="fas fa-home me-1"></i> Trang Chủ</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/user/diem/bangxephang}"
+                ><i class="fas fa-trophy me-1"></i> Bảng Xếp Hạng</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                ><i class="fas fa-file-alt me-1"></i> Bài Viết Của Tôi</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                ><i class="fas fa-sign-out-alt me-1"></i> Đăng Xuất</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="content container">
+      <div class="mb-4">
+        <h2 class="mb-4 text-center">🌟 Hoạt Động Người Dùng 🌟</h2>
+        <form action="#" method="post">
+          <div class="mb-3">
+            <label class="form-label">Tiêu Đề</label>
+            <input type="text" class="form-control" name="tieuDe" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nội Dung</label>
+            <textarea
+              class="form-control"
+              id="noiDung"
+              name="noiDung"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-custom w-100">Đăng Bài</button>
+        </form>
+      </div>
+      <div class="card post-card mb-4">
+        <h5 class="card-title">Tiêu Đề Bài Viết</h5>
+        <p class="card-text">Nội dung bài viết...</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <button class="btn btn-outline-light btn-sm">
+              <i class="fas fa-thumbs-up"></i> 100 Thích
+            </button>
+            <button class="btn btn-outline-light btn-sm">
+              <i class="fas fa-comment"></i> 50 Bình Luận
+            </button>
+            <button class="btn btn-warning btn-sm">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+          <small class="text-muted"> 01/01/2025</small>
+        </div>
+        <div class="comment-section mt-3">
+          <div class="d-flex mb-2">
+            <img
+              src="/images/avatar/commenter.png"
+              alt="Commenter"
+              width="40"
+              height="40"
+              class="rounded-circle me-2"
+            />
+            <div>
+              <h6 class="mb-0">Tên Người Dùng</h6>
+              <small class="text-muted">01/01/2025 12:00</small>
+              <p>Nội dung bình luận...</p>
+              <button class="btn btn-warning btn-sm">
+                <i class="fas fa-edit"></i> Sửa
+              </button>
+              <button class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i> Xóa
+              </button>
+            </div>
+          </div>
+          <div class="comment-box">
+            <textarea
+              class="bg bg-light"
+              id="commentInput"
+              placeholder="Viết bình luận..."
+            ></textarea>
+            <button><i class="far fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var editor = new Jodit("#noiDung", {
+          height: 300,
+          placeholder: "Nhập nội dung tại đây...",
+          toolbarSticky: false,
+          theme: "default",
+          buttons: "bold,italic,underline,|,ul,ol,|,link,align,undo,redo",
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
