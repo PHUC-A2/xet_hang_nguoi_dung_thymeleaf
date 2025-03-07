@@ -139,6 +139,11 @@
               >
             </li>
             <li class="nav-item">
+              <a class="nav-link" th:href="@{/user/baiviet/tatca}">
+                <i class="fas fa-bolt me-1"></i> Hoạt động của tôi
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="#"
                 ><i class="fas fa-file-alt me-1"></i> Bài Viết Của Tôi</a
               >
@@ -152,17 +157,32 @@
         </div>
       </div>
     </nav>
-
     <div class="content container">
       <h2 class="mb-4 text-center">Hoạt Động Người Dùng</h2>
       <div class="mb-4">
-        <form action="#" method="post">
+        <form th:action="@{/user/baiviet/tao}" method="post">
           <div class="mb-3">
-            <label class="form-label">Tiêu Đề</label>
-            <input type="text" class="form-control" name="tieuDe" required />
+            <label for="nguoiDungId" class="form-label">Nhập ID của bạn</label>
+            <input
+              type="number"
+              class="form-control"
+              id="nguoiDungId"
+              name="nguoiDungId"
+              required
+            />
           </div>
           <div class="mb-3">
-            <label class="form-label">Nội Dung</label>
+            <label for="tieuDe" class="form-label">Tiêu Đề</label>
+            <input
+              type="text"
+              class="form-control"
+              id="tieuDe"
+              name="tieuDe"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="noiDung" class="form-label">Nội Dung</label>
             <textarea
               class="form-control"
               id="noiDung"
@@ -170,13 +190,41 @@
               required
             ></textarea>
           </div>
-          <button type="submit" class="btn btn-custom w-100">Đăng Bài</button>
+          <button type="submit" class="btn btn-custom w-100">
+            <i class="fas fa-plus-circle"></i> Đăng Bài
+          </button>
         </form>
       </div>
-
-      <div class="card post-card mb-4">
-        <h5 class="card-title">Tiêu Đề Bài Viết</h5>
-        <p class="card-text">Nội dung bài viết...</p>
+      <form th:action="@{/user/baiviet/timkiem}" method="get" class="mb-3">
+        <div class="input-group">
+          <input
+            type="text"
+            name="keyword"
+            class="form-control"
+            placeholder="Tìm kiếm bài viết..."
+          />
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      <!-- Danh sách bài viết -->
+      <div th:each="baiViet : ${danhSachBaiViet}" class="card post-card mb-4">
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title" th:text="'Tiêu đề: ' + ${baiViet.tieuDe}">
+            Tiêu Đề Bài Viết
+          </h5>
+          <a th:href="@{/user/baiviet/chitiet/{id}(id=${baiViet.id})}"
+            >Chi tiết bài viết</a
+          >
+        </div>
+        <p class="card-text" th:utext="'Nội dung: ' + ${baiViet.noiDung}">
+          Nội dung bài viết...
+        </p>
+        <p>
+          <strong>Người Đăng:</strong>
+          <span th:text="${baiViet.nguoiDung.tenDangNhap}">Tên Người Đăng</span>
+        </p>
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <button class="btn btn-outline-light btn-sm">
@@ -185,14 +233,28 @@
             <button class="btn btn-outline-light btn-sm">
               <i class="fas fa-comment"></i> 50 Bình Luận
             </button>
-            <button class="btn btn-warning btn-sm">
+            <a
+              th:href="@{/user/baiviet/sua/{id}(id=${baiViet.id})}"
+              class="btn btn-warning btn-sm"
+            >
               <i class="fas fa-edit"></i> Sửa
-            </button>
-            <button class="btn btn-danger btn-sm">
-              <i class="fas fa-trash"></i> Xóa
-            </button>
+            </a>
+            <form
+              th:action="@{/user/baiviet/xoa/{id}(id=${baiViet.id})}"
+              method="post"
+              style="display: inline"
+            >
+              <button class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i> Xóa
+              </button>
+            </form>
           </div>
-          <small class="text-muted"> 01/01/2025</small>
+          <small
+            class="text-muted"
+            th:text="'Bài viết được đăng vào ngày: ' + ${#temporals.format(baiViet.ngayDang, 'dd/MM/yyyy')}"
+          >
+            01/01/2025
+          </small>
         </div>
         <div class="comment-section mt-3">
           <div class="d-flex mb-2">
@@ -226,6 +288,7 @@
         </div>
       </div>
     </div>
+
     <hr class="mb-4" />
     <script>
       document.addEventListener("DOMContentLoaded", function () {

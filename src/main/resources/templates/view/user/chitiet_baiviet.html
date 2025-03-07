@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi Tiết Bài Viết</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(to right, #1a2a6c, #b21f24, #eb8f07); /* Thay đổi gradient cho dễ nhìn hơn */
+            color: #e0e0e0; /* Thay đổi màu văn bản */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .navbar-brand img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .content {
+            padding: 2rem;
+            flex-grow: 1;
+            padding-top: 80px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .btn-custom {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(to right, #ff4b2b, #ff416c);
+            transform: scale(1.05);
+        }
+
+        .article-content {
+            line-height: 1.8;
+        }
+
+        .article-content strong {
+            color: #ff416c;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/user}">
+                <img src="/images/avatar/image.png" alt="User" width="40" height="40" />
+                Trang Chủ VIP
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/user}">
+                            <i class="fas fa-home me-1"></i> Trang Chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/user/diem/bangxephang}">
+                            <i class="fas fa-trophy me-1"></i> Bảng Xếp Hạng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/user/baiviet/tatca}">
+                            <i class="fas fa-bolt me-1"></i> Hoạt động của tôi
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-file-alt me-1"></i> Bài Viết Của Tôi
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-sign-out-alt me-1"></i> Đăng Xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">Chi Tiết Bài Viết</div>
+                <div class="card-body article-content">
+                    <h2 th:text="${baiViet.tieuDe}">Tiêu Đề Bài Viết</h2>
+                    <p>
+                        <strong>Ngày Đăng:</strong>
+                        <span th:text="${#temporals.format(baiViet.ngayDang, 'dd/MM/yyyy')}">01/01/2025</span>
+                    </p>
+                    <p>
+                        <strong>Người Đăng:</strong>
+                        <span th:text="${baiViet.nguoiDung.tenDangNhap}">Tên Người Đăng</span>
+                    </p>
+                    <hr />
+                    <div th:utext="${baiViet.noiDung}">Nội dung bài viết...</div>
+                    <div class="mt-4">
+                        <a th:href="@{/user/baiviet/tatca}" class="btn btn-custom">
+                            <i class="fas fa-arrow-left me-1"></i> Quay lại
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
