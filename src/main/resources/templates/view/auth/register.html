@@ -1,0 +1,33 @@
+<!DOCTYPE html>  
+<html xmlns:th="http://www.thymeleaf.org">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Đăng Ký</title>  
+</head>  
+<body>  
+    <h2>Đăng Ký Tài Khoản</h2>  
+    <form th:action="@{/register}" method="post">  
+        <div>  
+            <label>Tên Đăng Nhập:</label>  
+            <input type="text" name="tenDangNhap" required/>  
+        </div>  
+        <div>  
+            <label>Mật Khẩu:</label>  
+            <input type="password" name="matKhau" required/>  
+        </div>  
+        <div>  
+            <label>Email:</label>  
+            <input type="email" name="email" required/>  
+        </div>  
+        <div>  
+            <button type="submit">Đăng Ký</button>  
+        </div>  
+        <div th:if="${param.error}">  
+            <p style="color: red;" th:text="${param.error}"></p>  
+        </div>  
+        <div th:if="${param.success}">  
+            <p style="color: green;" th:text="${param.success}"></p>  
+        </div>  
+    </form>  
+</body>  
+</html>  

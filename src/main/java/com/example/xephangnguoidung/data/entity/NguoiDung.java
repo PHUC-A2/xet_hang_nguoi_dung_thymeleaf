@@ -44,4 +44,5 @@ public class NguoiDung {
     protected void onCreate() {
         this.ngayTao = LocalDateTime.now();
     }
+
 }

@@ -1,8 +1,8 @@
 package com.example.xephangnguoidung.application.service;
-
 import java.util.List;
 
 import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.example.xephangnguoidung.data.entity.NguoiDung;
@@ -22,11 +22,11 @@ public class NguoiDungService {
 
     // ✅ 1️⃣ Tạo người dùng
     public NguoiDung luuNguoiDung(NguoiDung nguoiDung) {
-        if (nguoiDungRepository.findByTenDangNhap(nguoiDung.getTenDangNhap()).isPresent()) {
-            throw new RuntimeException("Tên đăng nhập đã tồn tại!");
+        if (nguoiDungRepository.existsByTenDangNhap(nguoiDung.getTenDangNhap())) {
+            throw new IllegalArgumentException("Tên đăng nhập đã tồn tại!");
         }
-        if (nguoiDungRepository.findByEmail(nguoiDung.getEmail()).isPresent()) {
-            throw new RuntimeException("Email đã tồn tại!");
+        if (nguoiDungRepository.existsByEmail(nguoiDung.getEmail())) {
+            throw new IllegalArgumentException("Email đã tồn tại!");
         }
         return nguoiDungRepository.save(nguoiDung);
     }

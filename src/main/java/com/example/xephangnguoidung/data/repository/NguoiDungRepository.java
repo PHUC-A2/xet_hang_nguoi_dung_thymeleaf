@@ -14,6 +14,10 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Long> {
 
     Optional<NguoiDung> findByEmail(String email);
 
+    boolean existsByTenDangNhap(String tenDangNhap);
+
+    boolean existsByEmail(String email);
+
     // List<NguoiDung> findAllByOrderByDiemDesc();
 
     List<NguoiDung> findByTenDangNhapContainingIgnoreCaseOrEmailContainingIgnoreCase(String tenDangNhap, String email);
