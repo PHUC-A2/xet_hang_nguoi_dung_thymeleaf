@@ -1,4 +1,5 @@
 package com.example.xephangnguoidung.application.service;
+
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -54,10 +55,9 @@ public class NguoiDungService {
         NguoiDung nguoiDungHienTai = layNguoiDungById(id);
 
         if (!nguoiDung.getEmail().equals(nguoiDungHienTai.getEmail()) &&
-                nguoiDungRepository.findByEmail(nguoiDung.getEmail()).isPresent()) {
+                nguoiDungRepository.findByEmail(nguoiDung.getEmail()) != null) {
             throw new RuntimeException("Email đã tồn tại!");
         }
-
         nguoiDungHienTai.setTenDangNhap(nguoiDung.getTenDangNhap());
         nguoiDungHienTai.setMatKhau(nguoiDung.getMatKhau());
         nguoiDungHienTai.setEmail(nguoiDung.getEmail());
@@ -122,5 +122,10 @@ public class NguoiDungService {
     // số lượng người dùng
     public long soLuongNguoiDung() {
         return this.nguoiDungRepository.count();
+    }
+
+    // xử lý đăng nhập lấy bằng email
+    public NguoiDung getNguoiDungByEmail(String email) {
+        return this.nguoiDungRepository.findByEmail(email);
     }
 }
