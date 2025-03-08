@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.example.xephangnguoidung.data.entity.NguoiDung;
+import com.example.xephangnguoidung.data.entity.dto.RegisterDTO;
 import com.example.xephangnguoidung.data.enums.CapBac;
 import com.example.xephangnguoidung.data.repository.DiemNguoiDungRepository;
 import com.example.xephangnguoidung.data.repository.NguoiDungRepository;
@@ -128,4 +129,15 @@ public class NguoiDungService {
     public NguoiDung getNguoiDungByEmail(String email) {
         return this.nguoiDungRepository.findByEmail(email);
     }
+
+    // xử lý đăng ký
+    public NguoiDung registerDTOtoNguoiDung(RegisterDTO registerDTO) {
+        NguoiDung nguoiDung = new NguoiDung();
+        nguoiDung.setTenDangNhap(registerDTO.getTenDangNhap());
+        nguoiDung.setEmail(registerDTO.getEmail());
+        nguoiDung.setMatKhau(registerDTO.getMatKhau());
+        nguoiDung.setVaiTro(registerDTO.getVaiTro());
+        return nguoiDung;
+    }
+
 }

@@ -107,7 +107,11 @@
   <body>
     <div class="register-container">
       <h2 class="text-center">Đăng Ký</h2>
-      <form action="#" method="post">
+      <form
+        th:action="@{/register}"
+        th:object="${registerNguoiDung}"
+        method="post"
+      >
         <div class="mb-3">
           <label for="username" class="form-label">Tên Đăng Nhập</label>
           <input
@@ -116,6 +120,7 @@
             id="username"
             name="username"
             required
+            th:field="*{tenDangNhap}"
           />
         </div>
         <div class="mb-3">
@@ -126,6 +131,7 @@
             id="email"
             name="email"
             required
+            th:field="*{email}"
           />
         </div>
         <div class="mb-3">
@@ -136,6 +142,7 @@
             id="password"
             name="password"
             required
+            th:field="*{matKhau}"
           />
         </div>
 
@@ -149,17 +156,24 @@
             id="confirmPassword"
             name="confirmPassword"
             required
+            th:field="*{xacNhanMatKhau}"
           />
         </div>
         <div class="mb-3">
           <label for="vaiTro" class="form-label">Vai trò</label>
-          <input
-            type="text"
+          <select
             class="form-control"
             id="vaiTro"
             name="vaiTro"
-            required
-          />
+            th:field="*{vaiTro}"
+          >
+            <option value="" disabled selected>Chọn vai trò</option>
+            <option
+              th:each="role : ${danhSachVaiTro}"
+              th:value="${role}"
+              th:text="${role}"
+            ></option>
+          </select>
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Đăng Ký</button>
