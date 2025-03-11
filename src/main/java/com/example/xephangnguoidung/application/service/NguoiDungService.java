@@ -1,6 +1,7 @@
 package com.example.xephangnguoidung.application.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.transaction.Transactional;
 
@@ -41,8 +42,11 @@ public class NguoiDungService {
 
     // ✅ 3️⃣ Lấy người dùng theo tên đăng nhập
     public NguoiDung layNguoiDungBangTenDangNhap(String tenDangNhap) {
-        return nguoiDungRepository.findByTenDangNhap(tenDangNhap)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng có tên đăng nhập: " + tenDangNhap));
+        NguoiDung nguoiDung = nguoiDungRepository.findByTenDangNhap(tenDangNhap);
+        if (nguoiDung == null) {
+            throw new RuntimeException("Không tìm thấy người dùng có tên đăng nhập: " + tenDangNhap);
+        }
+        return nguoiDung;
     }
 
     // ✅ 4️⃣ Lấy tất cả người dùng

@@ -19,11 +19,6 @@ import com.example.xephangnguoidung.application.service.NguoiDungService;
 @EnableMethodSecurity(securedEnabled = true)
 
 public class SecurityConfiguration {
-    private final CustomAuthenticationSuccessHandler successHandler;
-
-    public SecurityConfiguration(CustomAuthenticationSuccessHandler successHandler) {
-        this.successHandler = successHandler;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -48,17 +43,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationSuccessHandler successHandler)
+            throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/", "/login", "/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Chỉ ADMIN vào được /admin
                         .requestMatchers("/user/**").hasRole("USER") // Chỉ USER vào được /user
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()) // Những trang còn lại yêu cầu đăng nhập
                 .formLogin(login -> login
-                        .loginPage("/login")
-                        .successHandler(successHandler) // Sử dụng Custom Success Handler
+                        .loginPage("/login") // Đường dẫn trang đăng nhập
+                        .successHandler(successHandler) // Sử dụng Custom Success Handler để điều hướng theo vai trò
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")

@@ -20,12 +20,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             Authentication authentication) throws IOException, ServletException {
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        String redirectURL = "/";
+        String redirectURL = "/"; // Mặc định về trang chủ nếu không có vai trò nào phù hợp
 
         if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
             redirectURL = "/admin";
         } else if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER"))) {
-            redirectURL = "/user";
+            redirectURL = "/user/hoso";
         }
 
         response.sendRedirect(redirectURL);

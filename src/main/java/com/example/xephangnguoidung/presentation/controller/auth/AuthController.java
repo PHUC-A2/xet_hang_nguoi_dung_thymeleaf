@@ -50,8 +50,9 @@ public class AuthController {
 
     // Đăng nhập
     @GetMapping("/login")
-    public String getLogin(Model model) {
-        model.addAttribute("danhSachVaiTro", VaiTro.values()); // Gửi danh sách vai trò xuống trang login.html
+    public String getLogin() {
         return "auth/login"; // Trả về trang đăng nhập
     }
+
+    // logout
 }
