@@ -41,7 +41,10 @@ public class AuthController {
 
         nguoiDung.setVaiTro(nguoiDung.getVaiTro());
         this.nguoiDungService.luuNguoiDung(nguoiDung);
-        // System.out.println("Mat khau la: "+hashPassword);
+
+        System.out.println("Thong tin nguoi dung la:");
+        System.out.println(nguoiDung.toString());
+        System.out.println("Mat khau la: "+hashPassword);
         return "redirect:/login"; // trả về trang đăng nhập nếu đăng ký thành công
     }
 
