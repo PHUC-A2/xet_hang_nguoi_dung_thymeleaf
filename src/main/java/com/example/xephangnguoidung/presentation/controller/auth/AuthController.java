@@ -35,7 +35,7 @@ public class AuthController {
     public String getRegister(@ModelAttribute("registerNguoiDung") RegisterDTO registerDTO) {
         NguoiDung nguoiDung = this.nguoiDungService.registerDTOtoNguoiDung(registerDTO); // xử dụng DTO
 
-        // hash code 
+        // hash code
         String hashPassword = this.passwordEncoder.encode(nguoiDung.getMatKhau());
         nguoiDung.setMatKhau(hashPassword);
 
@@ -44,13 +44,14 @@ public class AuthController {
 
         System.out.println("Thong tin nguoi dung la:");
         System.out.println(nguoiDung.toString());
-        System.out.println("Mat khau la: "+hashPassword);
+        System.out.println("Mat khau la: " + hashPassword);
         return "redirect:/login"; // trả về trang đăng nhập nếu đăng ký thành công
     }
 
-    // login
+    // Đăng nhập
     @GetMapping("/login")
-    public String getLogin() {
-        return "auth/login"; // trả về trang đăng nhập
+    public String getLogin(Model model) {
+        model.addAttribute("danhSachVaiTro", VaiTro.values()); // Gửi danh sách vai trò xuống trang login.html
+        return "auth/login"; // Trả về trang đăng nhập
     }
 }

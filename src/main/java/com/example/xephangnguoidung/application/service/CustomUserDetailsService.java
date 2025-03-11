@@ -22,15 +22,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         NguoiDung nguoiDung = this.nguoiDungService.getNguoiDungByEmail(username);
 
         if (nguoiDung == null) {
             throw new UsernameNotFoundException("Người dùng không tồn tại");
         }
 
+        // Lấy vai trò
+        String role = "ROLE_" + nguoiDung.getVaiTro().name();
+        System.out.println("Người dùng đăng nhập: " + username + " có quyền: " + role);
+
         return new User(nguoiDung.getEmail(), nguoiDung.getMatKhau(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+                Collections.singletonList(new SimpleGrantedAuthority(role)));
     }
 
 }
