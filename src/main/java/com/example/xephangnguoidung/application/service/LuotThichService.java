@@ -104,4 +104,9 @@ public class LuotThichService {
                                 .findByNguoiDung_TenDangNhapContainingIgnoreCaseOrBaiViet_TieuDeContainingIgnoreCase(
                                                 keyword, keyword);
         }
+
+        public boolean kiemTraDaThich(Long nguoiDungId, Long baiVietId) {
+                return luotThichRepository.existsByNguoiDungIdAndBaiVietId(nguoiDungId, baiVietId);
+        }
+
 }

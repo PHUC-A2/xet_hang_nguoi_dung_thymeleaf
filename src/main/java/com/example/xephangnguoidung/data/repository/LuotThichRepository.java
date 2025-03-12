@@ -19,4 +19,7 @@ public interface LuotThichRepository extends JpaRepository<LuotThich, Long> {
 
     List<LuotThich> findByNguoiDung_TenDangNhapContainingIgnoreCaseOrBaiViet_TieuDeContainingIgnoreCase(
             String tenDangNhap, String tieuDe);
+
+    boolean existsByNguoiDungIdAndBaiVietId(Long nguoiDungId, Long baiVietId);
+
 }

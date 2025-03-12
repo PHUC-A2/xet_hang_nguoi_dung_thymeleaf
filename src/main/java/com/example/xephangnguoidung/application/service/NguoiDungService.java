@@ -1,7 +1,6 @@
 package com.example.xephangnguoidung.application.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import jakarta.transaction.Transactional;
 
@@ -142,6 +141,15 @@ public class NguoiDungService {
         nguoiDung.setMatKhau(registerDTO.getMatKhau());
         nguoiDung.setVaiTro(registerDTO.getVaiTro());
         return nguoiDung;
+    }
+    // lấy id người dùng hiện tại
+
+    public Long layIdNguoiDungHienTai(String email) {
+        NguoiDung nguoiDung = nguoiDungRepository.findByEmail(email);
+        if (nguoiDung == null) {
+            throw new RuntimeException("Không tìm thấy người dùng");
+        }
+        return nguoiDung.getId();
     }
 
 }
