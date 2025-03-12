@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.xephangnguoidung.application.service.BaiVietService;
+import com.example.xephangnguoidung.application.service.LuotThichService;
 import com.example.xephangnguoidung.application.service.NguoiDungService;
 import com.example.xephangnguoidung.data.entity.BaiViet;
 import com.example.xephangnguoidung.data.entity.NguoiDung;
@@ -26,10 +29,14 @@ public class BaiVietController {
     private static final Logger logger = LoggerFactory.getLogger(QuanLyBaiVietController.class);
     private final NguoiDungService nguoiDungService;
     private final BaiVietService baiVietService;
+    private final LuotThichService luotThichService;
 
-    public BaiVietController(NguoiDungService nguoiDungService, BaiVietService baiVietService) {
+    public BaiVietController(NguoiDungService nguoiDungService, BaiVietService baiVietService,
+            LuotThichService luotThichService) {
         this.nguoiDungService = nguoiDungService;
         this.baiVietService = baiVietService;
+        this.luotThichService = luotThichService;
+
     }
 
     @PostMapping("/tao")
@@ -59,7 +66,7 @@ public class BaiVietController {
         }
     }
 
-    // sửa 
+    // sửa
     @GetMapping("/sua/{id}")
     public String hienThiFormSua(@PathVariable Long id, Model model) {
         BaiViet baiViet = baiVietService.layBaiVietById(id);
@@ -92,6 +99,10 @@ public class BaiVietController {
     @GetMapping("/tatca")
     public String hienThiTatCaBaiViet(Model model) {
         List<BaiViet> danhSachBaiViet = baiVietService.layTatCaBaiViet();
+        for (BaiViet baiViet : danhSachBaiViet) {
+            int soLuotThich = luotThichService.demSoLuotThich(baiViet.getId());
+            baiViet.setSoLuotThich(soLuotThich);
+        }
         model.addAttribute("danhSachBaiViet", danhSachBaiViet);
         return "user/hoatdong_nguoidung";
     }
@@ -106,4 +117,42 @@ public class BaiVietController {
         return "user/hoatdong_nguoidung";
     }
 
+    /*
+     * @GetMapping("/user/hoso")
+     * public String getHoSo(@AuthenticationPrincipal UserDetails userDetails, Model
+     * model) {
+     * String username = userDetails.getUsername();
+     * NguoiDung nguoiDung = this.nguoiDungService.getNguoiDungByEmail(username);
+     * if (nguoiDung != null) {
+     * Long nguoiDungId = nguoiDung.getId();
+     * System.out.println("ID Nguoi Dung: " + nguoiDungId); // Kiểm tra ID trên
+     * console
+     * 
+     * model.addAttribute("nguoiDung", nguoiDung);
+     * model.addAttribute("nguoiDungId", nguoiDungId); // Thêm ID vào model
+     * 
+     * int tongDiem =
+     * diemNguoiDungService.tinhTongDiemByNguoiDungId(nguoiDung.getId());
+     * model.addAttribute("tongDiem", tongDiem);
+     * return "user/hoso_nguoidung";
+     * } else {
+     * return "error";
+     * }
+     * }
+     */
+    // lấy tất cả bài viết thuộc về USER hiện tại
+    @GetMapping("/tatcabaiviethientai")
+    public String hienThiTatCaBaiVietHienTai(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        String username = userDetails.getUsername();
+        NguoiDung nguoiDung = this.nguoiDungService.getNguoiDungByEmail(username);
+        if (nguoiDung != null) {
+            Long nguoiDungId = nguoiDung.getId();
+            List<BaiViet> danhSachBaiViet = baiVietService.layTatCaBaiVietById(nguoiDungId);
+            model.addAttribute("danhSachBaiViet", danhSachBaiViet);
+            return "user/danhsach_chitiet_baiviet";
+        } else {
+            return "error";
+        }
+
+    }
 }

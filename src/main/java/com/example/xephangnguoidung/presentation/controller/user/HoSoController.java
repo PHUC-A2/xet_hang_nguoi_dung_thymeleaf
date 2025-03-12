@@ -24,8 +24,12 @@ public class HoSoController {
         String username = userDetails.getUsername();
         NguoiDung nguoiDung = this.nguoiDungService.getNguoiDungByEmail(username);
         if (nguoiDung != null) {
+            Long nguoiDungId = nguoiDung.getId();
+            System.out.println("ID Nguoi Dung: " + nguoiDungId); // Kiểm tra ID trên console
+
             model.addAttribute("nguoiDung", nguoiDung);
-            // Lấy điểm của người dùng và thêm vào model
+            model.addAttribute("nguoiDungId", nguoiDungId); // Thêm ID vào model
+
             int tongDiem = diemNguoiDungService.tinhTongDiemByNguoiDungId(nguoiDung.getId());
             model.addAttribute("tongDiem", tongDiem);
             return "user/hoso_nguoidung";
@@ -33,5 +37,5 @@ public class HoSoController {
             return "error";
         }
     }
-    
+
 }

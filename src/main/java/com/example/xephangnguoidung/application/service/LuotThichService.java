@@ -77,6 +77,11 @@ public class LuotThichService {
                 diemNguoiDungService.tinhDiem(nguoiDungId, LoaiHoatDong.DUOC_THICH, -1);
         }
 
+        // Đếm tổng số lượt thích của một bài viết
+        public int demSoLuotThich(Long baiVietId) {
+                return luotThichRepository.countByBaiVietId(baiVietId);
+        }
+
         // Lấy danh sách ID người dùng thích bài viết
         public List<Long> layDanhSachNguoiThich(Long baiVietId) {
                 BaiViet baiViet = baiVietRepository.findById(baiVietId)

@@ -21,5 +21,5 @@ public interface LuotThichRepository extends JpaRepository<LuotThich, Long> {
             String tenDangNhap, String tieuDe);
 
     boolean existsByNguoiDungIdAndBaiVietId(Long nguoiDungId, Long baiVietId);
-
+    int countByBaiVietId(Long baiVietId);
 }

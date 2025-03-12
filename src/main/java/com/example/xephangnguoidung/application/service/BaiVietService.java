@@ -25,6 +25,10 @@ public class BaiVietService {
         return baiVietRepository.findAll();
     }
 
+    public List<BaiViet> layTatCaBaiVietById(Long id) {
+        return baiVietRepository.findByNguoiDungId(id);
+    }
+
     public BaiViet layBaiVietById(Long id) {
         return baiVietRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết với ID: " + id));

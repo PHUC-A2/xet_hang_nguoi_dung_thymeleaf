@@ -2,6 +2,9 @@ package com.example.xephangnguoidung.presentation.controller.user;
 
 import com.example.xephangnguoidung.application.service.LuotThichService;
 import com.example.xephangnguoidung.application.service.NguoiDungService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +22,10 @@ public class LuotThichController {
     }
 
     @PostMapping("/{baiVietId}")
-    public boolean toggleLike(@PathVariable Long baiVietId) {
+    public ResponseEntity<Integer> toggleLike(@PathVariable Long baiVietId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new RuntimeException("Người dùng chưa đăng nhập.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         Long nguoiDungId = nguoiDungService.layIdNguoiDungHienTai(authentication.getName());
@@ -30,10 +33,13 @@ public class LuotThichController {
 
         if (daLike) {
             luotThichService.xoaLuotThich(nguoiDungId, baiVietId);
-            return false; // Trả về false nếu unlike
         } else {
             luotThichService.themLuotThich(nguoiDungId, baiVietId);
-            return true; // Trả về true nếu like
         }
+
+        // Lấy lại số lượt thích sau khi cập nhật
+        int soLuotThich = luotThichService.demSoLuotThich(baiVietId);
+        return ResponseEntity.ok(soLuotThich);
     }
+
 }

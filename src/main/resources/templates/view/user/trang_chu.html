@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trang Chủ VIP</title>
+    <title>Hồ Sơ Cá Nhân</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -17,6 +17,7 @@
       rel="stylesheet"
     />
     <style>
+      /* CSS được giữ nguyên */
       body {
         font-family: "Poppins", sans-serif;
         background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
@@ -80,14 +81,14 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="@{/user}">
+        <a class="navbar-brand" th:href="@{/user}">
           <img
             src="/images/avatar/image.png"
             alt="User"
             width="40"
             height="40"
           />
-          Trang Chủ VIP
+          Hồ Sơ Cá Nhân
         </a>
         <button
           class="navbar-toggler"
@@ -103,7 +104,7 @@
         >
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" th:href="@{/user}"
+              <a class="nav-link active" th:href="@{/user/hoso}"
                 ><i class="fas fa-home me-1"></i> Trang Chủ</a
               >
             </li>
@@ -117,9 +118,8 @@
                 <i class="fas fa-bolt me-1"></i> Hoạt động của tôi
               </a>
             </li>
-
             <li class="nav-item">
-              <a class="nav-link" href="#"
+              <a class="nav-link" th:href="@{/user/baiviet/tatcabaiviethientai}"
                 ><i class="fas fa-file-alt me-1"></i> Bài Viết Của Tôi</a
               >
             </li>
@@ -131,7 +131,6 @@
                 ><i class="fas fa-sign-out-alt me-1"></i> Đăng Xuất</a
               >
             </li>
-
             <form
               id="logoutForm"
               th:action="@{/logout}"
@@ -152,9 +151,35 @@
               alt="Profile"
               class="profile-img"
             />
-            <h4>Tên Người Dùng</h4>
-            <p><i class="fas fa-envelope"></i> user@example.com</p>
-            <p><i class="fas fa-star"></i> Điểm: 150</p>
+            <!-- <h4>ID: <span th:text="${nguoiDungId}"></span></h4> -->
+
+            <h4>
+              <i class="fas fa-user"></i>
+              <span
+                th:text="|Tên: ${nguoiDung.tenDangNhap} - ID = ${nguoiDungId}|"
+              ></span>
+            </h4>
+
+            <p>
+              <i class="fas fa-envelope"></i>
+              <span th:text="${nguoiDung.email}">user@example.com</span>
+            </p>
+            <p>
+              <i class="fas fa-star"></i> Điểm:
+              <span th:text="${tongDiem}">150</span>
+            </p>
+            <p>
+              <i class="fas fa-user-tag"></i> Vai Trò:
+              <span th:text="${nguoiDung.vaiTro}">USER</span>
+            </p>
+            <p>
+              <i class="fas fa-level-up-alt"></i> Cấp Bậc:
+              <span th:text="${nguoiDung.capBac}">DONG</span>
+            </p>
+            <p>
+              <i class="fas fa-calendar-alt"></i> Ngày Tạo:
+              <span th:text="${nguoiDung.ngayTao}">2025-03-12</span>
+            </p>
           </div>
         </div>
         <div class="col-md-8">
@@ -186,7 +211,7 @@
           >
         </div>
         <div class="col-md-4">
-          <a href="#" class="btn btn-custom w-100"
+          <a th:href="@{/user/diem/bangxephang}" class="btn btn-custom w-100"
             ><i class="fas fa-trophy"></i> Bảng Xếp Hạng</a
           >
         </div>

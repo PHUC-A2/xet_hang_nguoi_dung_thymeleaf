@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BaiVietRepository extends JpaRepository<BaiViet, Long> {
     Optional<BaiViet> findByTieuDe(String tieuDe);
-
+    List<BaiViet> findByNguoiDungId(Long id);
     List<BaiViet> findByTieuDeContainingIgnoreCase(String keyword);
 }
