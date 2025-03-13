@@ -116,30 +116,6 @@ public class BaiVietController {
         model.addAttribute("baiViet", new BaiViet());
         return "user/hoatdong_nguoidung";
     }
-
-    /*
-     * @GetMapping("/user/hoso")
-     * public String getHoSo(@AuthenticationPrincipal UserDetails userDetails, Model
-     * model) {
-     * String username = userDetails.getUsername();
-     * NguoiDung nguoiDung = this.nguoiDungService.getNguoiDungByEmail(username);
-     * if (nguoiDung != null) {
-     * Long nguoiDungId = nguoiDung.getId();
-     * System.out.println("ID Nguoi Dung: " + nguoiDungId); // Kiểm tra ID trên
-     * console
-     * 
-     * model.addAttribute("nguoiDung", nguoiDung);
-     * model.addAttribute("nguoiDungId", nguoiDungId); // Thêm ID vào model
-     * 
-     * int tongDiem =
-     * diemNguoiDungService.tinhTongDiemByNguoiDungId(nguoiDung.getId());
-     * model.addAttribute("tongDiem", tongDiem);
-     * return "user/hoso_nguoidung";
-     * } else {
-     * return "error";
-     * }
-     * }
-     */
     // lấy tất cả bài viết thuộc về USER hiện tại
     @GetMapping("/tatcabaiviethientai")
     public String hienThiTatCaBaiVietHienTai(@AuthenticationPrincipal UserDetails userDetails, Model model) {

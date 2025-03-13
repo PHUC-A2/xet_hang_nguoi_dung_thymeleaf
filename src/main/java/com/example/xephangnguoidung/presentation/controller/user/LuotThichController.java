@@ -3,13 +3,16 @@ package com.example.xephangnguoidung.presentation.controller.user;
 import com.example.xephangnguoidung.application.service.LuotThichService;
 import com.example.xephangnguoidung.application.service.NguoiDungService;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
-@RestController
+@Controller
 @RequestMapping("/user/luotthich")
 public class LuotThichController {
 
@@ -21,11 +24,12 @@ public class LuotThichController {
         this.nguoiDungService = nguoiDungService;
     }
 
-    @PostMapping("/{baiVietId}")
-    public ResponseEntity<Integer> toggleLike(@PathVariable Long baiVietId) {
+    @GetMapping("/{baiVietId}")
+    public RedirectView toggleLike(@PathVariable Long baiVietId, RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            redirectAttributes.addFlashAttribute("error", "Bạn cần đăng nhập để thực hiện thao tác này.");
+            return new RedirectView("/login");
         }
 
         Long nguoiDungId = nguoiDungService.layIdNguoiDungHienTai(authentication.getName());
@@ -39,7 +43,7 @@ public class LuotThichController {
 
         // Lấy lại số lượt thích sau khi cập nhật
         int soLuotThich = luotThichService.demSoLuotThich(baiVietId);
-        return ResponseEntity.ok(soLuotThich);
+        redirectAttributes.addFlashAttribute("soLuotThich", soLuotThich);
+        return new RedirectView("/user/baiviet/tatca"); // load lại trang 
     }
-
 }

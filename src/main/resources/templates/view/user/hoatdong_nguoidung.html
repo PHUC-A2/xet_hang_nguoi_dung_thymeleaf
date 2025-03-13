@@ -244,42 +244,23 @@
         </p>
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <button
-              id="like-btn-[[${baiViet.id}]]"
-              class="btn btn-outline-light btn-sm"
-              th:onclick="'toggleLike(' + ${baiViet.id} + ')'"
-            >
+            <a th:href="@{/user/luotthich/{id}(id=${baiViet.id})}" class="btn btn-outline-light btn-sm">
               <i class="fas fa-thumbs-up"></i>
-              <span
-                id="like-count-[[${baiViet.id}]]"
-                th:text="${baiViet.soLuotThich}"
-              ></span>
-              Thích
-            </button>
-
+              <span th:text="${baiViet.soLuotThich}"></span> Thích
+            </a>
             <button class="btn btn-outline-light btn-sm">
               <i class="fas fa-comment"></i> 50 Bình Luận
             </button>
-            <a
-              th:href="@{/user/baiviet/sua/{id}(id=${baiViet.id})}"
-              class="btn btn-warning btn-sm"
-            >
+            <a th:href="@{/user/baiviet/sua/{id}(id=${baiViet.id})}" class="btn btn-warning btn-sm">
               <i class="fas fa-edit"></i> Sửa
             </a>
-            <form
-              th:action="@{/user/baiviet/xoa/{id}(id=${baiViet.id})}"
-              method="post"
-              style="display: inline"
-            >
+            <form th:action="@{/user/baiviet/xoa/{id}(id=${baiViet.id})}" method="post" style="display: inline">
               <button class="btn btn-danger btn-sm">
                 <i class="fas fa-trash"></i> Xóa
               </button>
             </form>
           </div>
-          <small
-            class="text-muted"
-            th:text="'Bài viết được đăng vào ngày: ' + ${#temporals.format(baiViet.ngayDang, 'dd/MM/yyyy')}"
-          >
+          <small class="text-muted" th:text="'Bài viết được đăng vào ngày: ' + ${#temporals.format(baiViet.ngayDang, 'dd/MM/yyyy')}">
             01/01/2025
           </small>
         </div>
@@ -338,64 +319,6 @@
           $("#commentInput").emojioneArea({ pickerPosition: "top" });
         });
       });
-
-      //
-      function likePost(baiVietId) {
-        fetch(`/user/luotthich/${baiVietId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "X-CSRF-TOKEN": document
-              .querySelector('meta[name="_csrf"]')
-              .getAttribute("content"),
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data) {
-              alert("Đã thích bài viết.");
-            } else {
-              alert("Đã bỏ thích bài viết.");
-            }
-            location.reload();
-          })
-          .catch((error) => {
-            alert("Có lỗi xảy ra, vui lòng thử lại.");
-          });
-      }
-    </script>
-    <script>
-      function toggleLike(baiVietId) {
-        fetch(`/user/luotthich/${baiVietId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": document
-              .querySelector('meta[name="_csrf"]')
-              .getAttribute("content"),
-          },
-        })
-          .then((response) => response.json())
-          .then((newLikeCount) => {
-            let likeCountElement = document.getElementById(
-              `like-count-${baiVietId}`
-            );
-            let likeButton = document.getElementById(`like-btn-${baiVietId}`);
-
-            // Cập nhật số lượt thích trên giao diện
-            likeCountElement.innerText = newLikeCount;
-
-            // Kiểm tra xem nút like đang có màu hay không
-            if (likeButton.classList.contains("btn-primary")) {
-              likeButton.classList.remove("btn-primary");
-              likeButton.classList.add("btn-outline-light");
-            } else {
-              likeButton.classList.add("btn-primary");
-              likeButton.classList.remove("btn-outline-light");
-            }
-          })
-          .catch((error) => console.error("Lỗi:", error));
-      }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   </body>
