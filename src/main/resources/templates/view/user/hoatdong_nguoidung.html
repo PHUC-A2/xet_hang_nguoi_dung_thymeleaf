@@ -30,8 +30,8 @@
     <style>
       body {
         font-family: "Poppins", sans-serif;
-        background-color: #121212;
-        color: white;
+        background-color: #f8f9fa;
+        color: #343a40;
       }
       .navbar-brand img {
         border-radius: 50%;
@@ -39,7 +39,7 @@
       }
       .navbar,
       hr {
-        background: linear-gradient(90deg, #222, #444);
+        background: linear-gradient(90deg, #007bff, #6610f2);
         border-bottom: 2px solid #ffd700;
         border-top: 2px solid #ffd700;
       }
@@ -50,36 +50,37 @@
       .post-card {
         border: none;
         border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-        background: #1e1e1e;
-        transition: transform 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #ffffff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         padding: 1.5rem;
+        margin-bottom: 1.5rem;
       }
       .post-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 15px rgba(255, 75, 43, 0.2);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
       }
       .btn-custom {
-        background: #ff4b2b;
+        background: #007bff;
         color: white;
         border-radius: 8px;
         padding: 8px 16px;
       }
       .btn-custom:hover {
-        background: #ff416c;
+        background: #0056b3;
       }
       .comment-section {
-        background: #222;
+        background: #f1f1f1;
         padding: 10px;
         border-radius: 8px;
       }
       .text-muted {
-        color: #ffdd57 !important;
+        color: #6c757d !important;
       }
       .comment-box {
         display: flex;
         align-items: center;
-        background: #333;
+        background: #e9ecef;
         padding: 5px;
         border-radius: 20px;
       }
@@ -87,7 +88,7 @@
         height: 30px;
         border: none;
         background: transparent;
-        color: white;
+        color: #343a40;
         flex-grow: 1;
         resize: none;
         padding: 5px 10px;
@@ -96,12 +97,12 @@
       .comment-box button {
         border: none;
         background: none;
-        color: #ff4b2b;
+        color: #007bff;
         font-size: 16px;
       }
       .jodit-wysiwyg {
-        background-color: #1e1e1e !important; /* Nền tối */
-        color: #ffffff !important; /* Chữ trắng */
+        background-color: #ffffff !important; /* Nền sáng */
+        color: #343a40 !important; /* Chữ đen */
       }
     </style>
   </head>
@@ -244,11 +245,11 @@
         </p>
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <a th:href="@{/user/luotthich/{id}(id=${baiViet.id})}" class="btn btn-outline-light btn-sm">
+            <a th:href="@{/user/luotthich/{id}(id=${baiViet.id})}" class="btn btn-outline-primary btn-sm">
               <i class="fas fa-thumbs-up"></i>
               <span th:text="${baiViet.soLuotThich}"></span> Thích
             </a>
-            <button class="btn btn-outline-light btn-sm">
+            <button class="btn btn-outline-primary btn-sm">
               <i class="fas fa-comment"></i> 50 Bình Luận
             </button>
             <a th:href="@{/user/baiviet/sua/{id}(id=${baiViet.id})}" class="btn btn-warning btn-sm">
