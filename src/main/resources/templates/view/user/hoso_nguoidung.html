@@ -109,6 +109,11 @@
               >
             </li>
             <li class="nav-item">
+              <a class="nav-link active" th:href="@{/user/thongtincanhan}">
+                <i class="fas fa-user me-1"></i> Thông tin cá nhân
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" th:href="@{/user/diem/bangxephang}"
                 ><i class="fas fa-trophy me-1"></i> Bảng Xếp Hạng</a
               >
@@ -206,7 +211,9 @@
       </div>
       <div class="row mt-4">
         <div class="col-md-4">
-          <a th:href="@{/user/baiviet/tatcabaiviethientai}" class="btn btn-custom w-100"
+          <a
+            th:href="@{/user/baiviet/tatcabaiviethientai}"
+            class="btn btn-custom w-100"
             ><i class="fas fa-eye"></i> Xem Bài Viết</a
           >
         </div>

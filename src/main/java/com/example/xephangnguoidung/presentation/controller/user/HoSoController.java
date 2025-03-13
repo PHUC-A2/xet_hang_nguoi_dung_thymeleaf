@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/user")
 public class HoSoController {
     private final NguoiDungService nguoiDungService;
     private final DiemNguoiDungService diemNguoiDungService;
@@ -19,7 +21,7 @@ public class HoSoController {
         this.diemNguoiDungService = diemNguoiDungService;
     }
 
-    @GetMapping("/user/hoso")
+    @GetMapping("/hoso")
     public String getHoSo(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         NguoiDung nguoiDung = this.nguoiDungService.getNguoiDungByEmail(username);
@@ -36,6 +38,25 @@ public class HoSoController {
         } else {
             return "error";
         }
+    }
+
+    @GetMapping("/thongtincanhan")
+    public String userProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) {
+            return "redirect:/login"; // Chuyển hướng nếu chưa đăng nhập
+        }
+
+        NguoiDung nguoiDung = this.nguoiDungService.getNguoiDungByEmail(userDetails.getUsername());
+
+        if (nguoiDung == null) {
+            return "error"; // Trả về trang lỗi nếu không tìm thấy người dùng
+        }
+
+        // In log kiểm tra
+        System.out.println("NguoiDung: " + nguoiDung);
+
+        model.addAttribute("user", nguoiDung);
+        return "user/thongtin_canhan";
     }
 
 }
