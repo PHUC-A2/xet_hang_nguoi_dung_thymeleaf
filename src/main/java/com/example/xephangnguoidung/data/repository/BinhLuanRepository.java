@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface BinhLuanRepository extends JpaRepository<BinhLuan, Long> {
     List<BinhLuan> findByBaiViet(BaiViet baiViet);
-
+    List<BinhLuan> findByBaiVietId(Long baiVietId);
     List<BinhLuan> findByNoiDungContainingIgnoreCase(String keyword);
 }

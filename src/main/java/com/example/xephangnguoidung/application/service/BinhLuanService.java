@@ -29,7 +29,7 @@ public class BinhLuanService {
         this.diemNguoiDungService = diemNguoiDungService;
     }
 
-    // Thêm bình luận
+    // Thêm bình luận doi voi admin
     @Transactional
     public BinhLuan themBinhLuan(Long nguoiDungId, BinhLuan binhLuan) {
         NguoiDung nguoiDung = nguoiDungRepository.findById(nguoiDungId)
@@ -43,6 +43,10 @@ public class BinhLuanService {
 
         return binhLuanMoi;
     }
+
+    // // Thêm bình luận đối với user
+    // @Transactional
+    // public BinhLuan themBinhLuanDoiVoi(Long nguoiDungId, Long baiVietId, BinhLuan binhLuan)
 
     // Xóa bình luận
     public void xoaBinhLuan(Long binhLuanId) {
