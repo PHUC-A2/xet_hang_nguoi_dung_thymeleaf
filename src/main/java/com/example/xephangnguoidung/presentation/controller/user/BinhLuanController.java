@@ -58,7 +58,7 @@ public class BinhLuanController {
     // Xóa bình luận
     @PostMapping("/xoa/{binhLuanId}")
     public String xoaBinhLuan(@PathVariable Long binhLuanId) {
-        binhLuanService.xoaBinhLuan(binhLuanId);
+        this.binhLuanService.xoaBinhLuan(binhLuanId);
         return "redirect:/user/baiviet/tatca";
     }
 }

@@ -183,7 +183,7 @@
             </p>
             <p>
               <i class="fas fa-calendar-alt"></i> Ngày Tạo:
-              <span th:text="${nguoiDung.ngayTao}">2025-03-12</span>
+              <span th:text="${#temporals.format(nguoiDung.ngayTao, 'dd/MM/yyyy')}">2025-03-12</span>
             </p>
           </div>
         </div>

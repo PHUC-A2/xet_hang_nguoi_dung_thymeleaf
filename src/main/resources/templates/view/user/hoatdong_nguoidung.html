@@ -256,7 +256,7 @@
               <i class="fas fa-comment"></i
               ><span th:text="${baiViet.soLuotBinhLuan}"></span> Bình Luận
             </a>
-            
+
             <a
               th:href="@{/user/baiviet/sua/{id}(id=${baiViet.id})}"
               class="btn btn-warning btn-sm"
@@ -304,12 +304,31 @@
               <p th:text="'Đã bình luận: ' + ${binhLuan.noiDung}">
                 Nội dung bình luận...
               </p>
-              <button class="btn btn-warning btn-sm">
+              <!-- <button class="btn btn-warning btn-sm">
                 <i class="fas fa-edit"></i> Sửa
-              </button>
-              <button class="btn btn-danger btn-sm">
+              </button> -->
+              <!-- <button class="btn btn-danger btn-sm">
                 <i class="fas fa-trash"></i> Xóa
-              </button>
+              </button> -->
+              <!-- Nút Sửa mở modal tương ứng dựa theo ID -->
+              <a
+                class="btn btn-warning btn-sm"
+                href="#"
+                data-bs-toggle="modal"
+                th:attr="data-bs-target='#editCommentModal-' + ${binhLuan.id}"
+              >
+                <i class="fas fa-pencil-alt"></i> Sửa
+              </a>
+              <form
+                th:action="@{'/user/binhluan/xoa/' + ${binhLuan.id}}"
+                method="post"
+                style="display: inline"
+              >
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash"></i> Xóa
+                </button>
+              </form>
             </div>
           </div>
           <div class="comment-box">
