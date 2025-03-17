@@ -7,7 +7,7 @@ D:.
 |   mvnw.cmd
 |   pom.xml
 |   README.md
-|   structure.txt
+|   tree_structure.txt
 |   
 +---.idea
 |       vcs.xml
@@ -193,6 +193,7 @@ D:.
 |   |   |                               BaiVietController.java
 |   |   |                               BinhLuanController.java
 |   |   |                               HoSoController.java
+|   |   |                               LuotThichController.java
 |   |   |                               TrangChuController.java
 |   |   |                               XepHangController.java
 |   |   |                               
@@ -227,19 +228,28 @@ D:.
 |   |               \---user
 |   |                       bang_xep_hang_nguoidung.html
 |   |                       chitiet_baiviet.html
+|   |                       danhsach_chitiet_baiviet.html
 |   |                       hoatdong_nguoidung.html
 |   |                       hoso_nguoidung.html
 |   |                       sua_baiviet.html
-|   |                       test.html
+|   |                       thongtin_canhan.html
 |   |                       trang_chu.html
 |   |                       
 |   \---test
-|       \---java
-|           \---com
-|               \---example
-|                   \---xephangnguoidung
-|                           XephangnguoidungApplicationTests.java
-|                           
+|       +---java
+|       |   \---com
+|       |       \---example
+|       |           \---xephangnguoidung
+|       |               |   XephangnguoidungApplicationTests.java
+|       |               |   
+|       |               \---controller
+|       |                       TestController.java
+|       |                       
+|       \---resources
+|           \---templates
+|                   test.html
+|                   testds_baiviet_binhluan.html
+|                   
 \---target
     +---classes
     |   |   application.properties
@@ -305,6 +315,7 @@ D:.
     |   |                           BaiVietController.class
     |   |                           BinhLuanController.class
     |   |                           HoSoController.class
+    |   |                           LuotThichController.class
     |   |                           TrangChuController.class
     |   |                           XepHangController.class
     |   |                           
@@ -335,10 +346,11 @@ D:.
     |           \---user
     |                   bang_xep_hang_nguoidung.html
     |                   chitiet_baiviet.html
+    |                   danhsach_chitiet_baiviet.html
     |                   hoatdong_nguoidung.html
     |                   hoso_nguoidung.html
     |                   sua_baiviet.html
-    |                   test.html
+    |                   thongtin_canhan.html
     |                   trang_chu.html
     |                   
     +---generated-sources
@@ -346,8 +358,15 @@ D:.
     +---generated-test-sources
     |   \---test-annotations
     \---test-classes
-        \---com
-            \---example
-                \---xephangnguoidung
-                        XephangnguoidungApplicationTests.class
-                        
+        +---com
+        |   \---example
+        |       \---xephangnguoidung
+        |           |   XephangnguoidungApplicationTests.class
+        |           |   
+        |           \---controller
+        |                   TestController.class
+        |                   
+        \---templates
+                test.html
+                testds_baiviet_binhluan.html
+                
