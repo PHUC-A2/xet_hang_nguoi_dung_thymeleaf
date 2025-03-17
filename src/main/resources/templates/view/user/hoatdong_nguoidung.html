@@ -252,9 +252,11 @@
               <i class="fas fa-thumbs-up"></i>
               <span th:text="${baiViet.soLuotThich}"></span> Thích
             </a>
-            <button class="btn btn-outline-primary btn-sm">
-              <i class="fas fa-comment"></i> 50 Bình Luận
-            </button>
+            <a href="#" class="btn btn-outline-primary btn-sm">
+              <i class="fas fa-comment"></i
+              ><span th:text="${baiViet.soLuotBinhLuan}"></span> Bình Luận
+            </a>
+            
             <a
               th:href="@{/user/baiviet/sua/{id}(id=${baiViet.id})}"
               class="btn btn-warning btn-sm"
@@ -278,7 +280,10 @@
             01/01/2025
           </small>
         </div>
-        <div class="comment-section mt-3">
+        <div
+          class="comment-section mt-3"
+          th:each="binhLuan : ${baiViet.binhLuans}"
+        >
           <div class="d-flex mb-2">
             <img
               src="/images/avatar/commenter.png"
@@ -288,9 +293,17 @@
               class="rounded-circle me-2"
             />
             <div>
-              <h6 class="mb-0">Tên Người Dùng</h6>
-              <small class="text-muted">01/01/2025 12:00</small>
-              <p>Nội dung bình luận...</p>
+              <h6 class="mb-0" th:text="${binhLuan.nguoiDung.tenDangNhap}">
+                Tên Người Dùng
+              </h6>
+              <small
+                class="text-muted"
+                th:text="${#temporals.format(binhLuan.ngayDang, 'dd/MM/yyyy')}"
+                >01/01/2025 12:00</small
+              >
+              <p th:text="'Đã bình luận: ' + ${binhLuan.noiDung}">
+                Nội dung bình luận...
+              </p>
               <button class="btn btn-warning btn-sm">
                 <i class="fas fa-edit"></i> Sửa
               </button>

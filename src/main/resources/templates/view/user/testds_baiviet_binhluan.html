@@ -178,11 +178,16 @@
     <div class="content container">
       <div class="mt-3" th:each="baiViet : ${danhSachBaiViet}">
         <h2 class="mb-4 text-center">Danh sách bài viết</h2>
+        <p th:text="${baiViet.id}"></p>
         <p th:text="${baiViet.tieuDe}"></p>
-      </div>
-      <div class="mt-3" th:each="binhLuan : ${danhSachBinhLuan}">
-        <h2 class="mb-4 text-center">Danh sách bình luận</h2>
-        <p th:text="${binhLuan.id}"></p>
+        <p th:text="${baiViet.nguoiDung.id}"></p>
+        <p th:text="${baiViet.ngayDang}"></p>
+        <div class="mt-3" th:each="binhLuan : ${baiViet.binhLuans}">
+          <h2 class="mb-4 text-center">Danh sách bình luận</h2>
+          <p th:text="'Nội dung bình luận: ' + ${binhLuan.noiDung}"></p>
+          <p th:text="'Người bình luận ID: ' + ${binhLuan.nguoiDung.id}"></p>
+          <p th:text="'Tên người bình luận: ' + ${binhLuan.nguoiDung.tenDangNhap}"></p>
+        </div>
       </div>
     </div>
 

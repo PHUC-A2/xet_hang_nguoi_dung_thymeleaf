@@ -97,4 +97,9 @@ public class BinhLuanService {
     public Long soLuongBinhLuan() {
         return binhLuanRepository.count();
     }
+
+    // Đếm tổng số lượt bình luận của một bài viết
+    public int demSoLuotBinhLuan(Long baiVietId) {
+        return this.binhLuanRepository.countByBaiVietId(baiVietId);
+    }
 }

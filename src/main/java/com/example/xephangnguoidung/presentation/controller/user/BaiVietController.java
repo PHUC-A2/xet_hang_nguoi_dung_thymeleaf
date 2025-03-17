@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.xephangnguoidung.application.service.BaiVietService;
+import com.example.xephangnguoidung.application.service.BinhLuanService;
 import com.example.xephangnguoidung.application.service.LuotThichService;
 import com.example.xephangnguoidung.application.service.NguoiDungService;
 import com.example.xephangnguoidung.data.entity.BaiViet;
@@ -30,12 +31,15 @@ public class BaiVietController {
     private final NguoiDungService nguoiDungService;
     private final BaiVietService baiVietService;
     private final LuotThichService luotThichService;
+    private final BinhLuanService binhLuanService;
+
 
     public BaiVietController(NguoiDungService nguoiDungService, BaiVietService baiVietService,
-            LuotThichService luotThichService) {
+            LuotThichService luotThichService, BinhLuanService binhLuanService) {
         this.nguoiDungService = nguoiDungService;
         this.baiVietService = baiVietService;
         this.luotThichService = luotThichService;
+        this.binhLuanService = binhLuanService;
 
     }
 
@@ -98,11 +102,19 @@ public class BaiVietController {
 
     @GetMapping("/tatca")
     public String hienThiTatCaBaiViet(Model model) {
-        List<BaiViet> danhSachBaiViet = baiVietService.layTatCaBaiViet();
+        List<BaiViet> danhSachBaiViet = this.baiVietService.layTatCaBaiViet();
         for (BaiViet baiViet : danhSachBaiViet) {
-            int soLuotThich = luotThichService.demSoLuotThich(baiViet.getId());
+            int soLuotThich = this.luotThichService.demSoLuotThich(baiViet.getId());
+            int soLuotBinhLuan = this.binhLuanService.demSoLuotBinhLuan(baiViet.getId());
+
+            System.out.println("Bài viết ID: " + baiViet.getId());
+            System.out.println("Lượt thích: " + soLuotThich);
+            System.out.println("Lượt bình luận: " + soLuotBinhLuan);
+
             baiViet.setSoLuotThich(soLuotThich);
+            baiViet.setSoLuotBinhLuan(soLuotBinhLuan);
         }
+       
         model.addAttribute("danhSachBaiViet", danhSachBaiViet);
         return "user/hoatdong_nguoidung";
     }
