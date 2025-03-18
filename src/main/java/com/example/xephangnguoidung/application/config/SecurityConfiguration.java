@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                 http
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
-                                                .requestMatchers("/", "/login", "/register").permitAll()
+                                                .requestMatchers("/login", "/register").permitAll()
                                                 .requestMatchers("/admin/**").hasRole("ADMIN") // Chỉ ADMIN vào được
                                                                                                // /admin
                                                 .requestMatchers("/user/**").hasRole("USER") // Chỉ USER vào được /user

@@ -3,8 +3,6 @@ package com.example.xephangnguoidung.presentation.controller.user;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -22,13 +20,11 @@ import com.example.xephangnguoidung.application.service.LuotThichService;
 import com.example.xephangnguoidung.application.service.NguoiDungService;
 import com.example.xephangnguoidung.data.entity.BaiViet;
 import com.example.xephangnguoidung.data.entity.NguoiDung;
-import com.example.xephangnguoidung.presentation.controller.admin.QuanLyBaiVietController;
 
 @Controller
 @RequestMapping("/user/baiviet")
 public class BaiVietController {
 
-    private static final Logger logger = LoggerFactory.getLogger(QuanLyBaiVietController.class);
     private final NguoiDungService nguoiDungService;
     private final BaiVietService baiVietService;
     private final LuotThichService luotThichService;
