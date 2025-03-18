@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,6 @@ public class BaiVietController {
     private final LuotThichService luotThichService;
     private final BinhLuanService binhLuanService;
 
-
     public BaiVietController(NguoiDungService nguoiDungService, BaiVietService baiVietService,
             LuotThichService luotThichService, BinhLuanService binhLuanService) {
         this.nguoiDungService = nguoiDungService;
@@ -44,29 +44,16 @@ public class BaiVietController {
     }
 
     @PostMapping("/tao")
-    public String taoBaiViet(@RequestParam Long nguoiDungId, BaiViet baiViet) {
+    public String taoBaiViet(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute BaiViet baiViet) {
         try {
-            logger.info("Bắt đầu tạo bài viết với ID người dùng: " + nguoiDungId);
-
-            // Lấy thông tin người dùng từ ID
-            NguoiDung nguoiDung = nguoiDungService.layNguoiDungById(nguoiDungId);
-            if (nguoiDung == null) {
-                logger.error("Không tìm thấy người dùng với ID: " + nguoiDungId);
-                throw new RuntimeException("Không tìm thấy người dùng!");
-            }
-
-            // Gán người dùng vào bài viết
+            String username = userDetails.getUsername();
+            NguoiDung nguoiDung = nguoiDungService.getNguoiDungByEmail(username);
             baiViet.setNguoiDung(nguoiDung);
-            logger.info("Đã gán người dùng vào bài viết");
-
-            // Lưu bài viết vào database
             baiVietService.luuBaiViet(baiViet);
-            logger.info("Đã lưu bài viết vào database");
-
-            return "redirect:/user/baiviet/tatca"; // Corrected redirect URL
+            return "redirect:/user/baiviet/tatca";
         } catch (Exception e) {
-            logger.error("Lỗi khi tạo bài viết", e);
-            return "redirect:/error";
+            e.printStackTrace();
+            return "error";
         }
     }
 
@@ -114,7 +101,7 @@ public class BaiVietController {
             baiViet.setSoLuotThich(soLuotThich);
             baiViet.setSoLuotBinhLuan(soLuotBinhLuan);
         }
-       
+
         model.addAttribute("danhSachBaiViet", danhSachBaiViet);
         return "user/hoatdong_nguoidung";
     }
@@ -128,6 +115,7 @@ public class BaiVietController {
         model.addAttribute("baiViet", new BaiViet());
         return "user/hoatdong_nguoidung";
     }
+
     // lấy tất cả bài viết thuộc về USER hiện tại
     @GetMapping("/tatcabaiviethientai")
     public String hienThiTatCaBaiVietHienTai(@AuthenticationPrincipal UserDetails userDetails, Model model) {

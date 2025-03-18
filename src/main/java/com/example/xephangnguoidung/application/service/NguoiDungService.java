@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.xephangnguoidung.data.entity.NguoiDung;
 import com.example.xephangnguoidung.data.entity.dto.RegisterDTO;
 import com.example.xephangnguoidung.data.enums.CapBac;
+import com.example.xephangnguoidung.data.enums.VaiTro;
 import com.example.xephangnguoidung.data.repository.DiemNguoiDungRepository;
 import com.example.xephangnguoidung.data.repository.NguoiDungRepository;
 
@@ -152,4 +153,7 @@ public class NguoiDungService {
         return nguoiDung.getId();
     }
 
+     public boolean isAdminExists() {
+        return nguoiDungRepository.existsByVaiTro(VaiTro.ADMIN);
+    }
 }

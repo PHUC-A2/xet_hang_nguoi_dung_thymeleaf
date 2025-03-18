@@ -112,6 +112,9 @@
         th:object="${registerNguoiDung}"
         method="post"
       >
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+          <span th:text="${error}"></span>
+        </div>
         <div class="mb-3">
           <label for="username" class="form-label">Tên Đăng Nhập</label>
           <input
@@ -137,7 +140,7 @@
         <div class="mb-3">
           <label for="password" class="form-label">Mật Khẩu</label>
           <input
-            type="text"
+            type="password"
             class="form-control"
             id="password"
             name="password"

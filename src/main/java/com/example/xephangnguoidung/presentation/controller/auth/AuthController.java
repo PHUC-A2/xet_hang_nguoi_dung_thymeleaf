@@ -32,7 +32,21 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String getRegister(@ModelAttribute("registerNguoiDung") RegisterDTO registerDTO) {
+    public String getRegister(@ModelAttribute("registerNguoiDung") RegisterDTO registerDTO, Model model) {
+        if (!registerDTO.getMatKhau().equals(registerDTO.getXacNhanMatKhau())) {
+            model.addAttribute("error", "Mật khẩu và xác nhận mật khẩu không khớp.");
+            model.addAttribute("registerNguoiDung", registerDTO);
+            model.addAttribute("danhSachVaiTro", VaiTro.values());
+            return "auth/register"; // Trả về trang đăng ký với thông báo lỗi
+        }
+
+        if (registerDTO.getVaiTro() == VaiTro.ADMIN && nguoiDungService.isAdminExists()) {
+            model.addAttribute("error", "Chỉ có thể đăng ký một tài khoản admin. Vui lòng đăng ký với vai trò USER.");
+            model.addAttribute("registerNguoiDung", registerDTO);
+            model.addAttribute("danhSachVaiTro", VaiTro.values());
+            return "auth/register"; // Trả về trang đăng ký với thông báo lỗi
+        }
+
         NguoiDung nguoiDung = this.nguoiDungService.registerDTOtoNguoiDung(registerDTO); // xử dụng DTO
 
         // hash code
@@ -50,9 +64,10 @@ public class AuthController {
 
     // Đăng nhập
     @GetMapping("/login")
-    public String getLogin() {
+    public String getLogin(Model model) {
+        model.addAttribute("loginError", false);
         return "auth/login"; // Trả về trang đăng nhập
     }
 
-    // logout
+    // Không cần phương thức postLogin vì Spring Security sẽ xử lý đăng nhập
 }

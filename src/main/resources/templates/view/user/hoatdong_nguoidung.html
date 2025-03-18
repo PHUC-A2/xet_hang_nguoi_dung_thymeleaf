@@ -83,6 +83,7 @@
         background: #e9ecef;
         padding: 5px;
         border-radius: 20px;
+        width: 100%; /* Đảm bảo chiều rộng đầy đủ */
       }
       .comment-box textarea {
         height: 30px;
@@ -93,6 +94,7 @@
         resize: none;
         padding: 5px 10px;
         font-size: 14px;
+        width: 100%; /* Đảm bảo chiều rộng đầy đủ */
       }
       .comment-box button {
         border: none;
@@ -103,6 +105,10 @@
       .jodit-wysiwyg {
         background-color: #ffffff !important; /* Nền sáng */
         color: #343a40 !important; /* Chữ đen */
+      }
+      .comment-section p {
+        word-wrap: break-word; /* Đảm bảo từ dài sẽ xuống dòng */
+        word-break: break-all; /* Đảm bảo từ dài sẽ xuống dòng */
       }
     </style>
   </head>
@@ -180,16 +186,6 @@
       <div class="mb-4">
         <form th:action="@{/user/baiviet/tao}" method="post">
           <div class="mb-3">
-            <label for="nguoiDungId" class="form-label">Nhập ID của bạn</label>
-            <input
-              type="number"
-              class="form-control"
-              id="nguoiDungId"
-              name="nguoiDungId"
-              required
-            />
-          </div>
-          <div class="mb-3">
             <label for="tieuDe" class="form-label">Tiêu Đề</label>
             <input
               type="text"
@@ -232,9 +228,12 @@
           <h5 class="card-title" th:text="'Tiêu đề: ' + ${baiViet.tieuDe}">
             Tiêu Đề Bài Viết
           </h5>
-          <a th:href="@{/user/baiviet/chitiet/{id}(id=${baiViet.id})}"
-            >Chi tiết bài viết</a
+          <a
+            th:href="@{/user/baiviet/chitiet/{id}(id=${baiViet.id})}"
+            class="btn btn-outline-info btn-sm"
           >
+            <i class="fas fa-info-circle"></i> Chi tiết
+          </a>
         </div>
         <p class="card-text" th:utext="'Nội dung: ' + ${baiViet.noiDung}">
           Nội dung bài viết...
@@ -250,11 +249,11 @@
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-thumbs-up"></i>
-              <span th:text="${baiViet.soLuotThich}"></span> Thích
+              <span th:text="${baiViet.soLuotThich}"></span>
             </a>
             <a href="#" class="btn btn-outline-primary btn-sm">
-              <i class="fas fa-comment"></i
-              ><span th:text="${baiViet.soLuotBinhLuan}"></span> Bình Luận
+              <i class="fas fa-comment"></i>
+              <span th:text="${baiViet.soLuotBinhLuan}"></span>
             </a>
 
             <a
@@ -280,11 +279,8 @@
             01/01/2025
           </small>
         </div>
-        <div
-          class="comment-section mt-3"
-          th:each="binhLuan : ${baiViet.binhLuans}"
-        >
-          <div class="d-flex mb-2">
+        <div class="comment-section mt-3">
+          <div th:each="binhLuan : ${baiViet.binhLuans}" class="d-flex mb-2">
             <img
               src="/images/avatar/commenter.png"
               alt="Commenter"
@@ -304,13 +300,6 @@
               <p th:text="'Đã bình luận: ' + ${binhLuan.noiDung}">
                 Nội dung bình luận...
               </p>
-              <!-- <button class="btn btn-warning btn-sm">
-                <i class="fas fa-edit"></i> Sửa
-              </button> -->
-              <!-- <button class="btn btn-danger btn-sm">
-                <i class="fas fa-trash"></i> Xóa
-              </button> -->
-              <!-- Nút Sửa mở modal tương ứng dựa theo ID -->
               <a
                 class="btn btn-warning btn-sm"
                 href="#"
@@ -336,7 +325,6 @@
               <input type="hidden" name="baiVietId" th:value="${baiViet.id}" />
               <textarea
                 class="bg bg-light"
-                id="commentInput"
                 name="noiDung"
                 placeholder="Viết bình luận..."
                 required
@@ -366,8 +354,11 @@
             "bold,italic,underline,|,ul,ol,|,link,align,undo,redo,source",
           extraButtons: ["fontsize", "font", "brush", "paragraph", "source"],
         });
+
         $(document).ready(function () {
-          $("#commentInput").emojioneArea({ pickerPosition: "top" });
+          $(".comment-box textarea").each(function () {
+            $(this).emojioneArea({ pickerPosition: "top" });
+          });
         });
       });
     </script>

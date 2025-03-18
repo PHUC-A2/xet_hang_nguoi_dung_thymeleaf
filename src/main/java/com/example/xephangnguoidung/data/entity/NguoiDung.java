@@ -20,7 +20,7 @@ public class NguoiDung {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true , columnDefinition = "NVARCHAR(255)")
+    @Column(nullable = false, unique = true, columnDefinition = "NVARCHAR(255)")
     private String tenDangNhap;
 
     @Column(nullable = false)
@@ -44,5 +44,4 @@ public class NguoiDung {
     protected void onCreate() {
         this.ngayTao = LocalDateTime.now();
     }
-
 }
